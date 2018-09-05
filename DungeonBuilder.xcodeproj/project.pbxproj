@@ -24,6 +24,7 @@
 		790A2B26213EC03E00BBE94D /* Dungeon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B25213EC03E00BBE94D /* Dungeon.swift */; };
 		790A2B28213EE68F00BBE94D /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B27213EE68F00BBE94D /* Room.swift */; };
 		790A2B2F213F8A7000BBE94D /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Position.swift */; };
+		790A2B32213FEA7300BBE94D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B31213FEA7300BBE94D /* Direction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +61,7 @@
 		790A2B2C213F7CB100BBE94D /* dungeon.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = dungeon.js; sourceTree = "<group>"; };
 		790A2B2E213F8A7000BBE94D /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
 		790A2B30213FE2F200BBE94D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		790A2B31213FEA7300BBE94D /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				790A2B0B213EB0B000BBE94D /* Node.swift */,
 				790A2B27213EE68F00BBE94D /* Room.swift */,
 				790A2B2E213F8A7000BBE94D /* Position.swift */,
+				790A2B31213FEA7300BBE94D /* Direction.swift */,
 			);
 			path = DungeonBuilder;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				790A2B26213EC03E00BBE94D /* Dungeon.swift in Sources */,
 				790A2B22213EB88000BBE94D /* RandomNumberGenerator.swift in Sources */,
 				790A2B28213EE68F00BBE94D /* Room.swift in Sources */,
+				790A2B32213FEA7300BBE94D /* Direction.swift in Sources */,
 				790A2B16213EB3F300BBE94D /* DungeonSize.swift in Sources */,
 				790A2B18213EB3FA00BBE94D /* RoomSize.swift in Sources */,
 				790A2B0A213EB07000BBE94D /* DungeonBuilder.swift in Sources */,
