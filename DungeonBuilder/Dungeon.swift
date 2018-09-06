@@ -52,11 +52,9 @@ open class Dungeon: CustomStringConvertible {
                 let node = self.nodes[y][x]
                 output += (node.contains(.blocked)
                     ? "  " : (node.label != nil
-                        ? " \(node.label!)"
-                        : (node.contains(.room)
+                        ? " \(node.label!)" : (node.contains(.room)
                             ? " ·" : (node.contains(.corridor)
-                                ? " +"
-                                : (node.contains(.perimeter)
+                                ? " +" : (node.contains(.perimeter)
                                     ? " #"
                                     : "  "
                                 )
