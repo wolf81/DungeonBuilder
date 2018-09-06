@@ -37,7 +37,7 @@ open class Configuration {
     
     static var Default: Configuration {
         return Configuration(
-            dungeonSize: .small,
+            dungeonSize: .medium,
             dungeonLayout: .rectangle,
             roomSize: .medium,
             roomLayout: .scattered,

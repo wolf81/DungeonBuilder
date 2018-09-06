@@ -46,6 +46,14 @@ public struct Node: OptionSet {
         }
     }
     
+    public var label: String? {
+        get {
+            let value = UInt8(self.rawValue >> 24 & 255)
+            let scalar = UnicodeScalar(value)
+            return value != 0 ? String(scalar) : nil
+        }
+    }
+    
     /// Mark the node as containing a room and set the room id.
     ///
     /// - Parameter roomId: The id of the room.
@@ -62,6 +70,19 @@ public struct Node: OptionSet {
         value |= (Node.roomId.rawValue & (roomId << 6))
         
         // update the node
+        self = Node(rawValue: value)
+    }
+    
+    mutating func setLabel(character: Character) {
+        var value = self.rawValue
+        
+        // TODO: clear label?
+        
+        if let char = character.unicodeScalars.first, char.isASCII {
+            print("v: \(char.value)")
+            value |= UInt(char.value) << 24
+        }
+        
         self = Node(rawValue: value)
     }
 }

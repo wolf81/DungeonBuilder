@@ -29,6 +29,7 @@
 		793DCBB42140EBC2004BA50D /* CloseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DCBB32140EBC2004BA50D /* CloseInfo.swift */; };
 		793DCBB62140EBD3004BA50D /* CloseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DCBB52140EBD3004BA50D /* CloseType.swift */; };
 		79E069572141048D000BBA8D /* Mask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E069562141048D000BBA8D /* Mask.swift */; };
+		79E0695A2141202B000BBA8D /* StringProtocolExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79E069592141202B000BBA8D /* StringProtocolExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,7 @@
 		793DCBB32140EBC2004BA50D /* CloseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseInfo.swift; sourceTree = "<group>"; };
 		793DCBB52140EBD3004BA50D /* CloseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseType.swift; sourceTree = "<group>"; };
 		79E069562141048D000BBA8D /* Mask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mask.swift; sourceTree = "<group>"; };
+		79E069592141202B000BBA8D /* StringProtocolExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringProtocolExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 		790A2AF1213EB05600BBE94D /* DungeonBuilder */ = {
 			isa = PBXGroup;
 			children = (
+				79E069582141201B000BBA8D /* Extensions */,
 				790A2B24213EBD6400BBE94D /* NumberGenerator */,
 				790A2B23213EBD4E00BBE94D /* Configuration */,
 				790A2AF2213EB05700BBE94D /* DungeonBuilder.h */,
@@ -171,6 +174,14 @@
 				790A2B2C213F7CB100BBE94D /* dungeon.js */,
 			);
 			path = Donjon;
+			sourceTree = "<group>";
+		};
+		79E069582141201B000BBA8D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				79E069592141202B000BBA8D /* StringProtocolExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,6 +311,7 @@
 				793DCBB62140EBD3004BA50D /* CloseType.swift in Sources */,
 				790A2B1E213EB76200BBE94D /* NumberGeneratable.swift in Sources */,
 				790A2B1C213EB45B00BBE94D /* DeadEndRemoval.swift in Sources */,
+				79E0695A2141202B000BBA8D /* StringProtocolExtensions.swift in Sources */,
 				790A2B0C213EB0B000BBE94D /* Node.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,5 +31,4 @@ class RandomNumberGenerator: NumberGeneratable {
     func next(maxValue: Int) -> Int {
         return Int(self.distribution.nextUniform() * Float(maxValue))
     }
-
 }

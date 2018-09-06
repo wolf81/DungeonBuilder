@@ -31,6 +31,7 @@ open class DungeonBuilder {
         applyMask(to: dungeon)
         addRooms(to: dungeon)
         openRooms(in: dungeon)
+        labelRooms(in: dungeon)
         addCorridors(to: dungeon)
         clean(dungeon: dungeon)
         
@@ -41,6 +42,21 @@ open class DungeonBuilder {
         removeDeadEnds(in: dungeon)
         removePerimeters(in: dungeon)
 //        fixDoors(in: dungeon)
+    }
+    
+    private func labelRooms(in dungeon: Dungeon) {
+        for roomId in dungeon.rooms.keys.sorted() {
+            guard let room = dungeon.rooms[roomId] else { continue }
+            let id = String("\(roomId)")
+            let len = id.count
+            let midR = Int((room.north + room.south) / 2)
+            let midC = Int((room.west + room.east) / 2)
+            for i in (0 ..< len) {
+                let c = id[i]
+                let character = Character(String(c))
+                dungeon.nodes[midR][midC + i].setLabel(character: character)
+            }
+        }
     }
     
     private func removeDeadEnds(in dungeon: Dungeon) {
