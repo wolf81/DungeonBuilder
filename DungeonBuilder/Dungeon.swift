@@ -66,10 +66,10 @@ open class Dungeon: CustomStringConvertible {
         }
         
         output += """
-            LEGEND
-            ·   roomspace
-            +   corridor
-        
+           ┌─── LEGEND ───┐
+           │ ·  roomspace │
+           │ +  corridor  │
+           └──────────────┘
         """
         
         return output
