@@ -79,7 +79,6 @@ public struct Node: OptionSet {
         // TODO: clear label?
         
         if let char = character.unicodeScalars.first, char.isASCII {
-            print("v: \(char.value)")
             value |= UInt(char.value) << 24
         }
         
