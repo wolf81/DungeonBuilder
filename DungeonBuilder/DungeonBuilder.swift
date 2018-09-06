@@ -69,75 +69,66 @@ open class DungeonBuilder {
                 
                 if (deadEndRemoval == .all) || (self.numberGenerator.next(maxValue: 100) < percentage) {
                     let position = Position(i: r, j: c)
-                    collapseTunnel(in: dungeon, position: position, closeInfo: closeInfo)
+                    collapseTunnel(in: dungeon, position: position, directionCloseInfo: closeInfo)
                 }
             }
         }
     }
     
-    private func collapseTunnel(in dungeon: Dungeon, position: Position, closeInfo: [Direction: [CloseType: [Any]]]) {
+    private func collapseTunnel(in dungeon: Dungeon, position: Position, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
         if dungeon.node(at: position).isDisjoint(with: .openspace) {
             return
         }
         
-        for direction in closeInfo.keys {
-            let directionCloseEndInfo = closeInfo[direction]!
+        for direction in directionCloseInfo.keys {
+            let directionCloseEndInfo = directionCloseInfo[direction]!
             
             if checkTunnel(in: dungeon, position: position, closeInfo: directionCloseEndInfo) {
-                if let f = directionCloseEndInfo[.close] as? [[Int]] {
-                    for h in f {
-                        let bh = position.i + h[0]
-                        let ch = position.j + h[1]
-                        dungeon.nodes[bh][ch] = .nothing
+                if let closeInfo = directionCloseEndInfo[.close] as? [[Int]] {
+                    for closePosition in closeInfo {
+                        let r = position.i + closePosition[0]
+                        let c = position.j + closePosition[1]
+                        dungeon.nodes[r][c] = .nothing
                     }
                 }
                 
-                if let f = directionCloseEndInfo[.open] as? [Int] {
-                    let bf = position.i + f[0]
-                    let cf = position.j + f[1]                    
-                    dungeon.nodes[bf][cf].insert(.corridor)
+                if let openInfo = directionCloseEndInfo[.open] as? [Int] {
+                    let r = position.i + openInfo[0]
+                    let c = position.j + openInfo[1]                    
+                    dungeon.nodes[r][c].insert(.corridor)
                 }
                 
-                if let g = directionCloseEndInfo[.recurse] as? [Int] {
-                    let bg = position.i + g[0]
-                    let cg = position.j + g[1]
-                    if !(0 ..< dungeon.n_rows).contains(bg) || !(0 ..< dungeon.n_cols).contains(cg) {
+                if let recurseInfo = directionCloseEndInfo[.recurse] as? [Int] {
+                    let r = position.i + recurseInfo[0]
+                    let c = position.j + recurseInfo[1]
+                    if !(0 ..< dungeon.n_rows).contains(r) || !(0 ..< dungeon.n_cols).contains(c) {
                         continue
                     }
                     
-                    collapseTunnel(in: dungeon, position: Position(i: bg, j: cg), closeInfo: closeInfo)
+                    collapseTunnel(in: dungeon, position: Position(i: r, j: c), directionCloseInfo: directionCloseInfo)
                 }
             }
         }
     }
     
     private func checkTunnel(in dungeon: Dungeon, position: Position, closeInfo: [CloseType: [Any]]) -> Bool {
-        if let d = closeInfo[.corridor] as? [[Int]] {
-            for f in d {
-                let bf = position.i + f[0]
-                let cf = position.j + f[1]
+        if let corridorInfo = closeInfo[.corridor] as? [[Int]] {
+            for corridorPosition in corridorInfo {
+                let r = position.i + corridorPosition[0]
+                let c = position.j + corridorPosition[1]
                 
-                if bf < 0 || bf >= dungeon.nodes.count || cf < 0 || cf >= dungeon.nodes[0].count {
-                    continue
-                }
-                
-                let isCorridor = dungeon.nodes[bf][cf] == .corridor
-                if !isCorridor {
+                if dungeon.nodes[r][c].isDisjoint(with: .corridor) {
                     return false
                 }
             }
         }
         
-        if let d = closeInfo[.walled] as? [[Int]] {
-            for f in d {
-                let bf = position.i + f[0]
-                let cf = position.j + f[1]
+        if let walledInfo = closeInfo[.walled] as? [[Int]] {
+            for corridorPosition in walledInfo {
+                let r = position.i + corridorPosition[0]
+                let c = position.j + corridorPosition[1]
                 
-                if bf < 0 || bf >= dungeon.nodes.count || cf < 0 || cf >= dungeon.nodes[0].count {
-                    continue
-                }
-                
-                if dungeon.nodes[bf][cf].intersection(.openspace) != .nothing {
+                if dungeon.nodes[r][c].intersection(.openspace) != .nothing {
                     return false
                 }
             }
@@ -147,10 +138,10 @@ open class DungeonBuilder {
     }
     
     private func removePerimeters(in dungeon: Dungeon) {
-        for i in 0 ..< dungeon.n_rows {
-            for j in 0 ..< dungeon.n_cols {
-                if dungeon.nodes[i][j].contains(.perimeter) {
-                    dungeon.nodes[i][j] = .nothing
+        for r in 0 ..< dungeon.n_rows {
+            for c in 0 ..< dungeon.n_cols {
+                if dungeon.nodes[r][c].contains(.perimeter) {
+                    dungeon.nodes[r][c] = .nothing
                 }
             }
         }
@@ -161,16 +152,14 @@ open class DungeonBuilder {
             return
         }
         
-        let c = Float(mask.count) / Float(dungeon.n_rows)
-        let d = Float(mask[0].count) / Float(dungeon.n_cols)
+        let mr = Float(mask.count) / Float(dungeon.n_rows)
+        let mc = Float(mask[0].count) / Float(dungeon.n_cols)
         
-        for e in 0 ..< dungeon.n_rows {
-            let y = Int(Float(e) * c)
-            var g = mask[y]
-            for f in 0 ..< dungeon.n_cols {
-                let x = Int(Float(f) * d)
-                if g[x] == 0 {
-                    dungeon.nodes[e][f].insert(.blocked)
+        for r in 0 ..< dungeon.n_rows {
+            let rv = mask[Int(Float(r) * mr)]
+            for cv in 0 ..< dungeon.n_cols {
+                if rv[Int(Float(cv) * mc)] == 0 {
+                    dungeon.nodes[r][cv].insert(.blocked)
                 }
             }
         }
@@ -243,16 +232,16 @@ open class DungeonBuilder {
     
     private func openDoor(for dungeon: Dungeon, room: Room, sill: Sill) {
         for n in (0 ..< 3) {
-            let i = sill.r + sill.direction.y * n
-            let j = sill.c + sill.direction.x * n
-            dungeon.nodes[i][j].remove(.perimeter)
-            dungeon.nodes[i][j].insert(.entrance)
+            let r = sill.r + sill.direction.y * n
+            let c = sill.c + sill.direction.x * n
+            dungeon.nodes[r][c].remove(.perimeter)
+            dungeon.nodes[r][c].insert(.entrance)
         }
     }
     
     private func allocOpens(for dungeon: Dungeon, room: Room) -> Int {
-        let n = Int(sqrt(Double(room.width + 1) * Double(room.height + 1)))
-        return n + numberGenerator.next(maxValue: n)
+        let openCount = Int(sqrt(Double(room.width + 1) * Double(room.height + 1)))
+        return openCount + numberGenerator.next(maxValue: openCount)
     }
     
     private func doorSills(for dungeon: Dungeon, roomId: UInt) -> [Sill] {
@@ -384,12 +373,12 @@ open class DungeonBuilder {
         guard (0 ..< dungeon.n_rows).contains(destination.i) else { return false }
         guard (0 ..< dungeon.n_cols).contains(destination.j) else { return false }
         
-        var bn = [origin.i, destination.i].sorted()
-        var cn = [origin.j, destination.j].sorted()
+        var rowIdxs = [origin.i, destination.i].sorted()
+        var colIdxs = [origin.j, destination.j].sorted()
         
-        for e in bn[0] ... bn[1] {
-            for d in cn[0] ... cn[1] {
-                let cell = dungeon.nodes[e][d]
+        for r in rowIdxs[0] ... rowIdxs[1] {
+            for c in colIdxs[0] ... colIdxs[1] {
+                let cell = dungeon.nodes[r][c]                
                 if !cell.isDisjoint(with: .blockCorr) {
                     return false
                 }
