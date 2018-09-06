@@ -70,6 +70,7 @@ open class Dungeon: CustomStringConvertible {
            │ ·  roomspace │
            │ +  corridor  │
            └──────────────┘
+        
         """
         
         return output
