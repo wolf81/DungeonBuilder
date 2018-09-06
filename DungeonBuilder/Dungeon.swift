@@ -55,8 +55,7 @@ open class Dungeon: CustomStringConvertible {
                         ? " \(node.label!)" : (node.contains(.room)
                             ? " ·" : (node.contains(.corridor)
                                 ? " +" : (node.contains(.perimeter)
-                                    ? " #"
-                                    : "  "
+                                    ? " #" : "  "
                                 )
                             )
                         )
