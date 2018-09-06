@@ -28,7 +28,7 @@ class RandomNumberGenerator: NumberGeneratable {
         )
     }
     
-    func nextInt(maxValue: Int) -> Int {
+    func next(maxValue: Int) -> Int {
         return Int(self.distribution.nextUniform() * Float(maxValue))
     }
 

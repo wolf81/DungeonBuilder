@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum CorridorLayout {
+public enum CorridorLayout {
     case labyrinth
     case errant
     case straight

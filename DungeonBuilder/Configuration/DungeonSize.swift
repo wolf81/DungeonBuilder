@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DungeonSize: Int {
+public enum DungeonSize: Int {
     case fine = 11
     case diminiutive = 14
     case tiny = 17

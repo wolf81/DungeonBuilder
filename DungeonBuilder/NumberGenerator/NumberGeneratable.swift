@@ -8,8 +8,8 @@
 
 import Foundation
 
-protocol NumberGeneratable {
-    func nextInt(maxValue: Int) -> Int
+public protocol NumberGeneratable {
+    func next(maxValue: Int) -> Int
 
     func seed(data: Data)
 }

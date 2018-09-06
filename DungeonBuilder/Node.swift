@@ -8,8 +8,8 @@
 
 import Foundation
 
-struct Node: OptionSet {
-    var rawValue: UInt
+public struct Node: OptionSet {
+    public var rawValue: UInt
     
     static let nothing = Node(rawValue: 0)
     static let blocked = Node(rawValue: 1 << 0)
@@ -36,7 +36,11 @@ struct Node: OptionSet {
     static let blockCorr: Node = [.blocked, .perimeter, .corridor]
     static let blockDoor: Node = [.blocked, .doorspace]
     
-    var roomId: UInt {
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
+    }
+    
+    public var roomId: UInt {
         get {
             return (self.rawValue & Node.roomId.rawValue) >> 6
         }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Configuration {
+open class Configuration {
     let dungeonLayout: DungeonLayout
     let dungeonSize: DungeonSize
     let roomLayout: RoomLayout
@@ -37,7 +37,7 @@ class Configuration {
     
     static var Default: Configuration {
         return Configuration(
-            dungeonSize: .medium,
+            dungeonSize: .small,
             dungeonLayout: .rectangle,
             roomSize: .medium,
             roomLayout: .scattered,

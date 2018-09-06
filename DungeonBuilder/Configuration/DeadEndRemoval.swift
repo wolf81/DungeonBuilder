@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum DeadEndRemoval {
+public enum DeadEndRemoval {
     case none
     case some
     case all

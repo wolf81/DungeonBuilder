@@ -38,24 +38,46 @@ enum Direction: Int {
         case .eastSouth: return .westNorth
         }
     }
-}
-
-var di: [Direction: Int] = [
-    .north: -1,
-    .south: 1,
-    .west: 0,
-    .east: 0,
-]
-
-var dj: [Direction: Int] = [
-    .north: 0,
-    .south: 0,
-    .west: -1,
-    .east: 1,
-]
-
-var dirs: [Direction] {
-    return [.north, .west, .south, .east]
+    
+    static var cardinal: [Direction] {
+        return [.north, .west, .south, .east]
+    }
+    
+    var y: Int {
+        switch self {
+        case .northEast: fallthrough
+        case .northWest: fallthrough
+        case .eastNorth: fallthrough
+        case .westNorth: fallthrough
+        case .north: return -1
+            
+        case .southEast: fallthrough
+        case .southWest: fallthrough
+        case .eastSouth: fallthrough
+        case .westSouth: fallthrough
+        case .south: return 1
+            
+        default: return 0
+        }
+    }
+    
+    var x: Int {
+        switch self {
+        case .southWest: fallthrough
+        case .northWest: fallthrough
+        case .westSouth: fallthrough
+        case .westNorth: fallthrough
+        case .west: return -1
+            
+        case .southEast: fallthrough
+        case .northEast: fallthrough
+        case .eastNorth: fallthrough
+        case .eastSouth: fallthrough
+        case .east: return 1
+            
+        default: return 0
+        }
+    }
 }
 
 extension Direction: Comparable {

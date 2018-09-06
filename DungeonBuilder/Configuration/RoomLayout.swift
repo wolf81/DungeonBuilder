@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum RoomLayout {
+public enum RoomLayout {
     case sparse
     case scattered
     case dense

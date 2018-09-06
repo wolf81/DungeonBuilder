@@ -8,9 +8,7 @@
 
 import Foundation
 
-typealias Mask = [[Int]]
-
-class Dungeon: CustomStringConvertible {
+open class Dungeon: CustomStringConvertible {
     let n_i: Int
     let n_j: Int
     
@@ -45,8 +43,8 @@ class Dungeon: CustomStringConvertible {
     func node(at position: Position) -> Node {
         return self.nodes[position.i][position.j]
     }
-    
-    var description: String {
+        
+    public var description: String {
         var output = ""
         
         for y in 0 ..< self.n_rows {

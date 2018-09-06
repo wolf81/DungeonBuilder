@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum RoomSize {
+public enum RoomSize {
     case small
     case medium
     case large

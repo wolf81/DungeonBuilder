@@ -1,5 +1,5 @@
 //
-//  Data.swift
+//  CloseInfo.swift
 //  DungeonBuilder
 //
 //  Created by Wolfgang Schreurs on 06/09/2018.

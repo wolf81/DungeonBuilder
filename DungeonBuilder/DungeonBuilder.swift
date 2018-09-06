@@ -8,7 +8,7 @@
 
 import Foundation
 
-class DungeonBuilder {
+open class DungeonBuilder {
     let configuration: Configuration
     let numberGenerator: NumberGeneratable
     
@@ -47,12 +47,8 @@ class DungeonBuilder {
         collapseTunnels(in: dungeon, closeInfo: closeEndInfo)
         
         if self.configuration.closeArcs {
-            closeArcs(in: dungeon)
+            collapseTunnels(in: dungeon, closeInfo: closeArcInfo)
         }
-    }
-    
-    private func closeArcs(in dungeon: Dungeon) {
-        collapseTunnels(in: dungeon, closeInfo: closeArcInfo)
     }
     
     private func collapseTunnels(in dungeon: Dungeon, closeInfo: [Direction: [CloseType: [Any]]]) {
@@ -71,7 +67,7 @@ class DungeonBuilder {
                     continue
                 }
                 
-                if (deadEndRemoval == .all) || (self.numberGenerator.nextInt(maxValue: 100) < percentage) {
+                if (deadEndRemoval == .all) || (self.numberGenerator.next(maxValue: 100) < percentage) {
                     let position = Position(i: r, j: c)
                     collapseTunnel(in: dungeon, position: position, closeInfo: closeInfo)
                 }
@@ -84,34 +80,25 @@ class DungeonBuilder {
             return
         }
         
-        for g in closeInfo.keys {
-            let dg = closeInfo[g]!
+        for direction in closeInfo.keys {
+            let directionCloseEndInfo = closeInfo[direction]!
             
-            if checkTunnel(in: dungeon, position: position, closeInfo: dg) {
-//            if checkTunnel(cell: dungeon.cell, b: b, c: c, d: dg) {
-                if let f = dg[.close] as? [[Int]] {
+            if checkTunnel(in: dungeon, position: position, closeInfo: directionCloseEndInfo) {
+                if let f = directionCloseEndInfo[.close] as? [[Int]] {
                     for h in f {
                         let bh = position.i + h[0]
                         let ch = position.j + h[1]
-                        if !(0 ..< dungeon.n_rows).contains(bh) || !(0 ..< dungeon.n_cols).contains(ch) {
-                            continue
-                        }
-                        
                         dungeon.nodes[bh][ch] = .nothing
                     }
                 }
                 
-                if let f = dg[.open] as? [Int] {
+                if let f = directionCloseEndInfo[.open] as? [Int] {
                     let bf = position.i + f[0]
-                    let cf = position.j + f[1]
-                    if !(0 ..< dungeon.n_rows).contains(bf) || !(0 ..< dungeon.n_cols).contains(cf) {
-                        continue
-                    }
-                    
+                    let cf = position.j + f[1]                    
                     dungeon.nodes[bf][cf].insert(.corridor)
                 }
                 
-                if let g = dg[.recurse] as? [Int] {
+                if let g = directionCloseEndInfo[.recurse] as? [Int] {
                     let bg = position.i + g[0]
                     let cg = position.j + g[1]
                     if !(0 ..< dungeon.n_rows).contains(bg) || !(0 ..< dungeon.n_cols).contains(cg) {
@@ -232,7 +219,7 @@ class DungeonBuilder {
                 return
             }
             
-            let sillIdx = self.numberGenerator.nextInt(maxValue: sills.count)
+            let sillIdx = self.numberGenerator.next(maxValue: sills.count)
             let sill = sills.remove(at: sillIdx)
             let i = sill.door_r
             let j = sill.door_c
@@ -256,8 +243,8 @@ class DungeonBuilder {
     
     private func openDoor(for dungeon: Dungeon, room: Room, sill: Sill) {
         for n in (0 ..< 3) {
-            let i = sill.sill_r + di[sill.direction]! * n
-            let j = sill.sill_c + dj[sill.direction]! * n
+            let i = sill.r + sill.direction.y * n
+            let j = sill.c + sill.direction.x * n
             dungeon.nodes[i][j].remove(.perimeter)
             dungeon.nodes[i][j].insert(.entrance)
         }
@@ -265,7 +252,7 @@ class DungeonBuilder {
     
     private func allocOpens(for dungeon: Dungeon, room: Room) -> Int {
         let n = Int(sqrt(Double(room.width + 1) * Double(room.height + 1)))
-        return n + numberGenerator.nextInt(maxValue: n)
+        return n + numberGenerator.next(maxValue: n)
     }
     
     private func doorSills(for dungeon: Dungeon, roomId: UInt) -> [Sill] {
@@ -315,16 +302,16 @@ class DungeonBuilder {
     }
     
     private func checkSill(for dungeon: Dungeon, roomId: UInt, position: Position, direction: Direction) -> Sill? {
-        let door_r = position.i + di[direction]!
-        let door_c = position.j + dj[direction]!
+        let door_r = position.i + direction.y
+        let door_c = position.j + direction.x
         let door_cell = dungeon.nodes[door_r][door_c]
         
         guard door_cell.contains(.perimeter), door_cell.isDisjoint(with: .blockDoor) else {
             return nil
         }
         
-        let out_r = door_r + di[direction]!
-        let out_c = door_r + dj[direction]!
+        let out_r = door_r + direction.y
+        let out_c = door_r + direction.x
         let out_cell = dungeon.nodes[out_r][out_c]
         
         guard out_cell.isDisjoint(with: .blocked) else {
@@ -342,8 +329,8 @@ class DungeonBuilder {
         }
         
         return Sill(
-            sill_r: position.i,
-            sill_c: position.j,
+            r: position.i,
+            c: position.j,
             direction: direction,
             door_r: door_r,
             door_c: door_c,
@@ -356,8 +343,8 @@ class DungeonBuilder {
         
         for randomDirection in randomDirections {
             if openTunnel(in: dungeon, position: position, direction: randomDirection) {
-                let r = position.i + di[randomDirection]!
-                let c = position.j + dj[randomDirection]!
+                let r = position.i + randomDirection.y
+                let c = position.j + randomDirection.x
                 makeTunnel(in: dungeon, position: Position(i: r, j: c), with: randomDirection)
             }
         }
@@ -366,8 +353,8 @@ class DungeonBuilder {
     private func openTunnel(in dungeon: Dungeon, position: Position, direction: Direction) -> Bool {
         let r1 = position.i * 2 + 1
         let c1 = position.j * 2 + 1
-        let r2 = (position.i + di[direction]!) * 2 + 1
-        let c2 = (position.j + dj[direction]!) * 2 + 1
+        let r2 = (position.i + direction.y) * 2 + 1
+        let c2 = (position.j + direction.x) * 2 + 1
         let rMid = (r1 + r2) / 2
         let cMid = (c1 + c2) / 2
         
@@ -413,11 +400,10 @@ class DungeonBuilder {
     }
     
     private func tunnelDirections(with direction: Direction?) -> [Direction] {
-        let directions: [Direction] = [.north, .west, .south, .east]
-        var shuffledDirections = shuffle(items: directions)
+        var shuffledDirections = shuffle(items: Direction.cardinal)
 
         if let direction = direction {
-            let randomPercent = self.numberGenerator.nextInt(maxValue: 100)
+            let randomPercent = self.numberGenerator.next(maxValue: 100)
             if  randomPercent < self.configuration.corridorLayout.straightPercent {
                 shuffledDirections.insert(direction, at: 0)
             }
@@ -429,7 +415,7 @@ class DungeonBuilder {
         var shuffledItems = items
         
         for i in (0 ..< shuffledItems.count).reversed() {
-            let j = self.numberGenerator.nextInt(maxValue: i + 1)
+            let j = self.numberGenerator.next(maxValue: i + 1)
             let k = shuffledItems[i]
             shuffledItems[i] = shuffledItems[j]
             shuffledItems[j] = k
@@ -448,7 +434,7 @@ class DungeonBuilder {
                     continue
                 }
                 
-                guard (i != 0 && j != 0) && numberGenerator.nextInt(maxValue: 2) != 0 else {
+                guard (i != 0 && j != 0) && numberGenerator.next(maxValue: 2) != 0 else {
                     continue
                 }
 
@@ -562,24 +548,24 @@ class DungeonBuilder {
         
         if i != 0 {
             let radix = min(max(dungeon.n_i - size - position.i, 0), radixBase)
-            height = self.numberGenerator.nextInt(maxValue: radix) + size
+            height = self.numberGenerator.next(maxValue: radix) + size
         } else {
-            height = self.numberGenerator.nextInt(maxValue: radixBase) + size
+            height = self.numberGenerator.next(maxValue: radixBase) + size
         }
         
         if j != 0 {
             let radix = min(max(dungeon.n_j - size - position.j, 0), radixBase)
-            width = self.numberGenerator.nextInt(maxValue: radix) + size
+            width = self.numberGenerator.next(maxValue: radix) + size
         } else {
-            width = self.numberGenerator.nextInt(maxValue: radixBase) + size
+            width = self.numberGenerator.next(maxValue: radixBase) + size
         }
         
         if i == 0 {
-            i = self.numberGenerator.nextInt(maxValue: dungeon.n_i - height)
+            i = self.numberGenerator.next(maxValue: dungeon.n_i - height)
         }
         
         if j == 0 {
-            j = self.numberGenerator.nextInt(maxValue: dungeon.n_j - width)
+            j = self.numberGenerator.next(maxValue: dungeon.n_j - width)
         }
 
         return Room(i: i, j: j, width: width, height: height)

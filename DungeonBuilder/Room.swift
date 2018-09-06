@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Room {
+open class Room {
     let width: Int
     let height: Int
     let i: Int

@@ -15,4 +15,9 @@ struct Position {
     static var zero: Position {
         return Position(i: 0, j: 0)
     }
+    
+    init(i: Int, j: Int) {
+        self.i = i
+        self.j = j
+    }
 }
