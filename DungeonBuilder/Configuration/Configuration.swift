@@ -16,6 +16,11 @@ class Configuration {
     let corridorLayout: CorridorLayout
     let deadEndRemoval: DeadEndRemoval
     
+    var closeArcs: Bool {
+        let closeArcCorridors: [CorridorLayout] = [.straight, .errant]
+        return closeArcCorridors.contains(self.corridorLayout)
+    }
+    
     init(dungeonSize: DungeonSize,
          dungeonLayout: DungeonLayout,
          roomSize: RoomSize,

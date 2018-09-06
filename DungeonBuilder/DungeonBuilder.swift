@@ -45,6 +45,14 @@ class DungeonBuilder {
     
     private func removeDeadEnds(in dungeon: Dungeon) {
         collapseTunnels(in: dungeon, closeInfo: closeEndInfo)
+        
+        if self.configuration.closeArcs {
+            closeArcs(in: dungeon)
+        }
+    }
+    
+    private func closeArcs(in dungeon: Dungeon) {
+        collapseTunnels(in: dungeon, closeInfo: closeArcInfo)
     }
     
     private func collapseTunnels(in dungeon: Dungeon, closeInfo: [Direction: [CloseType: [Any]]]) {

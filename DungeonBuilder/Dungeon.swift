@@ -55,9 +55,9 @@ class Dungeon: CustomStringConvertible {
                 output += (node.contains(.blocked)
                     ? "  " : (node.contains(.room)
                         ? " ·" : (node.contains(.corridor)
-                            ? " #"
+                            ? " +"
                             : (node.contains(.perimeter)
-                                ? " o"
+                                ? " #"
                                 : "  "
                             )
                         )
