@@ -61,9 +61,8 @@ public struct Node: OptionSet {
         self.insert(.room)
         
         var value = self.rawValue
-        
-        // TODO: can probably be improved, not sure how?
-        // clear the old room id be clearing bits in range 6 ..< 16
+
+        // clear old room id
         value = value & 0b1111_1111_1111_1111_0000_0000_0011_1111
         
         // set the new room id
@@ -76,8 +75,10 @@ public struct Node: OptionSet {
     mutating func setLabel(character: Character) {
         var value = self.rawValue
         
-        // TODO: clear label?
+        // clear old label
+        value = value & 0b0000_0000_1111_1111_1111_1111_1111_1111
         
+        // TODO: perhaps throw error for invalid chars?
         if let char = character.unicodeScalars.first, char.isASCII {
             value |= UInt(char.value) << 24
         }
