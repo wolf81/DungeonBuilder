@@ -25,8 +25,6 @@ class DungeonBuilderTests: XCTestCase {
         let dungeonBuilder = DungeonBuilder(configuration: Configuration.Default)
         let dungeon = dungeonBuilder.build(name: "Cellar of Bloody Death")
         
-        print("### DUNGEON")
-        
         print(dungeon)
     }
     

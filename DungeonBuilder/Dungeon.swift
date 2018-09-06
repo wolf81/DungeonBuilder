@@ -65,6 +65,13 @@ open class Dungeon: CustomStringConvertible {
             output += "\n"
         }
         
+        output += """
+            LEGEND
+            ·   roomspace
+            +   corridor
+        
+        """
+        
         return output
     }
 }
