@@ -79,4 +79,4 @@ Print the dungeon to see a simplified map in the debug console. For example when
     +       +   · · · · · · ·   +   · · · · · · · · · · ·   +           +   +  
     + + + + +   · · · · · · ·   +   · · · · · · · · · · ·   + + + + + + + + +  
 
-In this particular output the '·' signs represent rooms and the '+' signs represent corridors.   
+In this particular output the `·` signs represent rooms and the `+` signs represent corridors.   
