@@ -80,14 +80,136 @@ class DungeonBuilder {
     }
     
     private func openRooms(in dungeon: Dungeon) {
-        for roomKey in dungeon.rooms.keys.sorted() {
-            let room = dungeon.rooms[roomKey]!
-            openRoom(dungeon: dungeon, room: room)
+        for roomId in dungeon.rooms.keys.sorted() {
+            openRoom(in: dungeon, roomId: roomId)
         }
     }
     
-    private func openRoom(dungeon: Dungeon, room: Room) {
+    private func openRoom(in dungeon: Dungeon, roomId: UInt) {
+        var sills = doorSills(for: dungeon, roomId: roomId)
         
+        guard let room = dungeon.rooms[roomId], sills.count > 0 else {
+            return
+        }
+        
+        let openCount = allocOpens(for: dungeon, room: room)
+        
+        for n in (0 ..< openCount) {
+            guard sills.count > 0 else {
+                return
+            }
+            
+            let sillIdx = self.numberGenerator.nextInt(maxValue: sills.count)
+            let sill = sills.remove(at: sillIdx)
+            let i = sill.door_r
+            let j = sill.door_c
+            guard dungeon.nodes[i][j].isDisjoint(with: .doorspace) else {
+                continue
+            }
+            
+            if let out_id = sill.out_id {
+                
+            } else {
+                openDoor(for: dungeon, room: room, sill: sill)
+            }
+        }
+    }
+    
+    private func openDoor(for dungeon: Dungeon, room: Room, sill: Sill) {
+        for n in (0 ..< 3) {
+            let i = sill.sill_r + di[sill.direction]! * n
+            let j = sill.sill_c + dj[sill.direction]! * n
+            dungeon.nodes[i][j].remove(.perimeter)
+            dungeon.nodes[i][j].insert(.entrance)
+        }
+    }
+    
+    private func allocOpens(for dungeon: Dungeon, room: Room) -> Int {
+        let n = Int(sqrt(Double(room.width + 1) * Double(room.height + 1)))
+        return n + numberGenerator.nextInt(maxValue: n)
+    }
+    
+    private func doorSills(for dungeon: Dungeon, roomId: UInt) -> [Sill] {
+        var sills: [Sill] = []
+        
+        guard let room = dungeon.rooms[roomId] else {
+            return []
+        }
+        
+        if room.north >= 3 {
+            for c in stride(from: room.west, to: room.east, by: 2) {
+                let position = Position(i: room.north, j: c)
+                if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .north) {
+                    sills.append(sill)
+                }
+            }
+        }
+        
+        if room.south <= (dungeon.n_rows - 3) {
+            for c in stride(from: room.west, to: room.east, by: 2) {
+                let position = Position(i: room.south, j: c)
+                if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .south) {
+                    sills.append(sill)
+                }
+            }
+        }
+
+        if room.west >= 3 {
+            for r in stride(from: room.north, to: room.south, by: 2) {
+                let position = Position(i: r, j: room.west)
+                if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .west) {
+                    sills.append(sill)
+                }
+            }
+        }
+        
+        if room.east <= (dungeon.n_cols - 3) {
+            for r in stride(from: room.north, to: room.south, by: 2) {
+                let position = Position(i: r, j: room.east)
+                if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .east) {
+                    sills.append(sill)
+                }
+            }
+        }
+
+        return sills
+    }
+    
+    private func checkSill(for dungeon: Dungeon, roomId: UInt, position: Position, direction: Direction) -> Sill? {
+        let door_r = position.i + di[direction]!
+        let door_c = position.j + dj[direction]!
+        let door_cell = dungeon.nodes[door_r][door_c]
+        
+        guard door_cell.contains(.perimeter), door_cell.isDisjoint(with: .blockDoor) else {
+            return nil
+        }
+        
+        let out_r = door_r + di[direction]!
+        let out_c = door_r + dj[direction]!
+        let out_cell = dungeon.nodes[out_r][out_c]
+        
+        guard out_cell.isDisjoint(with: .blocked) else {
+            return nil
+        }
+        
+        var out_id: UInt?
+        
+        if out_cell.contains(.room) {
+            out_id = out_cell.roomId
+            
+            if out_id == roomId {
+                return nil
+            }
+        }
+        
+        return Sill(
+            sill_r: position.i,
+            sill_c: position.j,
+            direction: direction,
+            door_r: door_r,
+            door_c: door_c,
+            out_id: out_id
+        )
     }
     
     private func makeTunnel(in dungeon: Dungeon, position: Position, with direction: Direction? = nil) {
@@ -152,28 +274,29 @@ class DungeonBuilder {
     }
     
     private func tunnelDirections(with direction: Direction?) -> [Direction] {
-        var directions = shuffle(directions: [.north, .west, .south, .east])
+        let directions: [Direction] = [.north, .west, .south, .east]
+        var shuffledDirections = shuffle(items: directions)
 
         if let direction = direction {
             let randomPercent = self.numberGenerator.nextInt(maxValue: 100)
             if  randomPercent < self.configuration.corridorLayout.straightPercent {
-                directions.insert(direction, at: 0)
+                shuffledDirections.insert(direction, at: 0)
             }
         }
-        return directions
+        return shuffledDirections
     }
     
-    private func shuffle(directions: [Direction]) -> [Direction] {
-        var directions = directions
+    private func shuffle<T: Comparable>(items: [T]) -> [T] {
+        var shuffledItems = items
         
-        for i in (0 ..< directions.count).reversed() {
+        for i in (0 ..< shuffledItems.count).reversed() {
             let j = self.numberGenerator.nextInt(maxValue: i + 1)
-            let k = directions[i]
-            directions[i] = directions[j]
-            directions[j] = k
+            let k = shuffledItems[i]
+            shuffledItems[i] = shuffledItems[j]
+            shuffledItems[j] = k
         }
         
-        return directions
+        return shuffledItems
     }
     
     private func addDenseRooms(to dungeon: Dungeon) {

@@ -57,3 +57,9 @@ var dj: [Direction: Int] = [
 var dirs: [Direction] {
     return [.north, .west, .south, .east]
 }
+
+extension Direction: Comparable {
+    static func < (lhs: Direction, rhs: Direction) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
