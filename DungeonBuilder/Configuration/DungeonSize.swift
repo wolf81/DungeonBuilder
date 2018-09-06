@@ -10,7 +10,7 @@ import Foundation
 
 public enum DungeonSize: Int {
     case fine = 11
-    case diminiutive = 14
+    case diminutive = 14
     case tiny = 17
     case small = 22
     case medium = 28
