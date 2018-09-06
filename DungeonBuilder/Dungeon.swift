@@ -21,7 +21,7 @@ class Dungeon: CustomStringConvertible {
     
     var nodes: [[Node]] = [[]]
     var rooms: [UInt: Room] = [:]
-    var connections: [String: UInt] = [:]
+    var connections: [String] = []
     
     /// Create a dungeon based on a base width and height.
     /// Please note that the actual width and height is
@@ -42,6 +42,10 @@ class Dungeon: CustomStringConvertible {
         )
     }
     
+    func node(at position: Position) -> Node {
+        return self.nodes[position.i][position.j]
+    }
+    
     var description: String {
         var output = ""
         
@@ -49,13 +53,13 @@ class Dungeon: CustomStringConvertible {
             for x in 0 ..< self.n_cols {
                 let node = self.nodes[y][x]
                 output += (node.contains(.blocked)
-                    ? "  " : (node.contains(.corridor)
-                        ? " #" : (node.contains(.room)
-                            ? " ·"
-//                            : (node.contains(.perimeter)
-//                                ? " o"
-                                : " ."
-//                            )
+                    ? "  " : (node.contains(.room)
+                        ? " ·" : (node.contains(.corridor)
+                            ? " #"
+                            : (node.contains(.perimeter)
+                                ? " o"
+                                : "  "
+                            )
                         )
                     )
                 )

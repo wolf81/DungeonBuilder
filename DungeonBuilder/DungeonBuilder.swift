@@ -32,8 +32,133 @@ class DungeonBuilder {
         addRooms(to: dungeon)
         openRooms(in: dungeon)
         addCorridors(to: dungeon)
+        clean(dungeon: dungeon)
         
         return dungeon
+    }
+    
+    private func clean(dungeon: Dungeon) {
+        removeDeadEnds(in: dungeon)
+        removePerimeters(in: dungeon)
+//        fixDoors(in: dungeon)
+    }
+    
+    private func removeDeadEnds(in dungeon: Dungeon) {
+        collapseTunnels(in: dungeon, closeInfo: closeEndInfo)
+    }
+    
+    private func collapseTunnels(in dungeon: Dungeon, closeInfo: [Direction: [CloseType: [Any]]]) {
+        let deadEndRemoval = self.configuration.deadEndRemoval
+        let percentage = deadEndRemoval.percentage
+        
+        guard percentage > 0 else { return }
+        
+        for i in (0 ..< dungeon.n_i) {
+            let r = i * 2 + 1
+            for j in (0 ..< dungeon.n_j) {
+                let c = j * 2 + 1
+                let node = dungeon.nodes[r][c]
+                
+                if node.isDisjoint(with: .openspace), node.contains(.stairs) {
+                    continue
+                }
+                
+                if (deadEndRemoval == .all) || (self.numberGenerator.nextInt(maxValue: 100) < percentage) {
+                    let position = Position(i: r, j: c)
+                    collapseTunnel(in: dungeon, position: position, closeInfo: closeInfo)
+                }
+            }
+        }
+    }
+    
+    private func collapseTunnel(in dungeon: Dungeon, position: Position, closeInfo: [Direction: [CloseType: [Any]]]) {
+        if dungeon.node(at: position).isDisjoint(with: .openspace) {
+            return
+        }
+        
+        for g in closeInfo.keys {
+            let dg = closeInfo[g]!
+            
+            if checkTunnel(in: dungeon, position: position, closeInfo: dg) {
+//            if checkTunnel(cell: dungeon.cell, b: b, c: c, d: dg) {
+                if let f = dg[.close] as? [[Int]] {
+                    for h in f {
+                        let bh = position.i + h[0]
+                        let ch = position.j + h[1]
+                        if !(0 ..< dungeon.n_rows).contains(bh) || !(0 ..< dungeon.n_cols).contains(ch) {
+                            continue
+                        }
+                        
+                        dungeon.nodes[bh][ch] = .nothing
+                    }
+                }
+                
+                if let f = dg[.open] as? [Int] {
+                    let bf = position.i + f[0]
+                    let cf = position.j + f[1]
+                    if !(0 ..< dungeon.n_rows).contains(bf) || !(0 ..< dungeon.n_cols).contains(cf) {
+                        continue
+                    }
+                    
+                    dungeon.nodes[bf][cf].insert(.corridor)
+                }
+                
+                if let g = dg[.recurse] as? [Int] {
+                    let bg = position.i + g[0]
+                    let cg = position.j + g[1]
+                    if !(0 ..< dungeon.n_rows).contains(bg) || !(0 ..< dungeon.n_cols).contains(cg) {
+                        continue
+                    }
+                    
+                    collapseTunnel(in: dungeon, position: Position(i: bg, j: cg), closeInfo: closeInfo)
+                }
+            }
+        }
+    }
+    
+    private func checkTunnel(in dungeon: Dungeon, position: Position, closeInfo: [CloseType: [Any]]) -> Bool {
+        if let d = closeInfo[.corridor] as? [[Int]] {
+            for f in d {
+                let bf = position.i + f[0]
+                let cf = position.j + f[1]
+                
+                if bf < 0 || bf >= dungeon.nodes.count || cf < 0 || cf >= dungeon.nodes[0].count {
+                    continue
+                }
+                
+                let isCorridor = dungeon.nodes[bf][cf] == .corridor
+                if !isCorridor {
+                    return false
+                }
+            }
+        }
+        
+        if let d = closeInfo[.walled] as? [[Int]] {
+            for f in d {
+                let bf = position.i + f[0]
+                let cf = position.j + f[1]
+                
+                if bf < 0 || bf >= dungeon.nodes.count || cf < 0 || cf >= dungeon.nodes[0].count {
+                    continue
+                }
+                
+                if dungeon.nodes[bf][cf].intersection(.openspace) != .nothing {
+                    return false
+                }
+            }
+        }
+        
+        return true
+    }
+    
+    private func removePerimeters(in dungeon: Dungeon) {
+        for i in 0 ..< dungeon.n_rows {
+            for j in 0 ..< dungeon.n_cols {
+                if dungeon.nodes[i][j].contains(.perimeter) {
+                    dungeon.nodes[i][j] = .nothing
+                }
+            }
+        }
     }
     
     private func applyMask(to dungeon: Dungeon) {
@@ -94,7 +219,7 @@ class DungeonBuilder {
         
         let openCount = allocOpens(for: dungeon, room: room)
         
-        for n in (0 ..< openCount) {
+        for _ in (0 ..< openCount) {
             guard sills.count > 0 else {
                 return
             }
@@ -108,7 +233,13 @@ class DungeonBuilder {
             }
             
             if let out_id = sill.out_id {
-                
+                let ids = [roomId, out_id].sorted()
+                let cid = "\(ids[0]),\(ids[1])"
+                if dungeon.connections.contains(cid) == false {
+                    openDoor(for: dungeon, room: room, sill: sill)
+                    dungeon.connections.append(cid)
+                }
+                // TODO
             } else {
                 openDoor(for: dungeon, room: room, sill: sill)
             }
@@ -219,7 +350,7 @@ class DungeonBuilder {
             if openTunnel(in: dungeon, position: position, direction: randomDirection) {
                 let r = position.i + di[randomDirection]!
                 let c = position.j + dj[randomDirection]!
-                makeTunnel(in: dungeon, position: Position(i: r, j: c), with: direction)
+                makeTunnel(in: dungeon, position: Position(i: r, j: c), with: randomDirection)
             }
         }
     }
