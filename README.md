@@ -2,7 +2,7 @@
 
 A 2D dungeon maze builder written in Swift.
 
-The code is based on the Perl and JavaScript versions written by [Donjon](https://donjon.bin.sh).
+The code is based on the Perl and JavaScript versions written by [Donjon](https://donjon.bin.sh). The Perl and JavaScript versions can be found in the [Donjon directory](https://github.com/wolf81/DungeonBuilder/tree/master/Donjon) for reference.
 
 ## Features
 
