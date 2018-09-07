@@ -14,6 +14,8 @@ open class Room {
     let i: Int
     let j: Int
     
+    var doors: [Direction: [Door]] = [:]
+    
     lazy var north: Int = { return self.i * 2 + 1 }()
     lazy var south: Int = { return (self.i + self.height) * 2 + 1 }()
     lazy var east: Int = { return (self.j + self.width) * 2 + 1 }()
@@ -25,5 +27,9 @@ open class Room {
         self.j = j
         self.width = width
         self.height = height
+        
+        for dir in Direction.cardinal {
+            self.doors[dir] = []
+        }
     }
 }

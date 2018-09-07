@@ -41,7 +41,7 @@ open class DungeonBuilder {
     private func clean(dungeon: Dungeon) {
         removeDeadEnds(in: dungeon)
         removePerimeters(in: dungeon)
-//        fixDoors(in: dungeon)
+        fixDoors(in: dungeon)
     }
     
     private func labelRooms(in dungeon: Dungeon) {
@@ -234,10 +234,10 @@ open class DungeonBuilder {
             
             if let out_id = sill.out_id {
                 let ids = [roomId, out_id].sorted()
-                let cid = "\(ids[0]),\(ids[1])"
-                if dungeon.connections.contains(cid) == false {
+                let connection = "\(ids[0]),\(ids[1])"
+                if dungeon.connections.contains(connection) == false {
                     openDoor(for: dungeon, room: room, sill: sill)
-                    dungeon.connections.append(cid)
+                    dungeon.connections.append(connection)
                 }
                 // TODO
             } else {
@@ -252,6 +252,65 @@ open class DungeonBuilder {
             let c = sill.c + sill.direction.x * n
             dungeon.nodes[r][c].remove(.perimeter)
             dungeon.nodes[r][c].insert(.entrance)
+        }
+
+        let door = Door(row: sill.door_r, col: sill.door_c, out_id: sill.out_id)
+        room.doors[sill.direction]?.append(door)
+    }
+
+    private func fixDoors(in dungeon: Dungeon) {
+        var fixed: [String] = []
+        
+        for roomKey in dungeon.rooms.keys.sorted() {
+            guard let room = dungeon.rooms[roomKey] else {
+                continue
+            }
+
+            for direction in room.doors.keys.sorted() {
+                guard let doors = room.doors[direction] else {
+                    continue
+                }
+                
+                for door in doors {
+                    var fixedDoors: [Door] = []
+
+                    let doorKey = "\(door.row).\(door.col)"
+
+                    if fixed.contains(doorKey) {
+                        fixedDoors.append(door)
+                    } else {
+                        let node = dungeon.nodes[door.row][door.col]
+                        guard node.isDisjoint(with: .openspace) == false else {
+                            continue
+                        }
+
+                        if let out_id = door.out_id {
+                            let out_dir = direction.opposite
+                            dungeon.rooms[out_id]?.doors[out_dir]?.append(door)
+                        }
+                        fixedDoors.append(door)
+                        fixed.append(doorKey)
+                    }
+                    
+                    if fixedDoors.count > 0 {
+                        room.doors[direction] = fixedDoors
+                        dungeon.doors.append(contentsOf: fixedDoors)
+                    } else {
+                        room.doors.removeValue(forKey: direction)
+                    }
+                }
+            }
+        }
+    }
+
+    private func doorType() -> Node {
+        switch self.numberGenerator.next(maxValue: 110) {
+        case ..<15: return .arch
+        case ..<60: return .door
+        case ..<75: return .locked
+        case ..<90: return .trapped
+        case ..<100: return .secret
+        default: return .portcullis
         }
     }
     

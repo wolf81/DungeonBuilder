@@ -15,6 +15,7 @@ open class Configuration {
     let roomSize: RoomSize
     let corridorLayout: CorridorLayout
     let deadEndRemoval: DeadEndRemoval
+    let doors: Doors
     
     var closeArcs: Bool {
         let closeArcCorridors: [CorridorLayout] = [.straight, .errant]
@@ -26,13 +27,15 @@ open class Configuration {
          roomSize: RoomSize,
          roomLayout: RoomLayout,
          corridorLayout: CorridorLayout,
-         deadEndRemoval: DeadEndRemoval) {
+         deadEndRemoval: DeadEndRemoval,
+         doors: Doors) {
         self.dungeonSize = dungeonSize
         self.dungeonLayout = dungeonLayout
         self.roomSize = roomSize
         self.roomLayout = roomLayout
         self.corridorLayout = corridorLayout
         self.deadEndRemoval = deadEndRemoval
+        self.doors = doors
     }
     
     static var Default: Configuration {
@@ -42,7 +45,8 @@ open class Configuration {
             roomSize: .medium,
             roomLayout: .scattered,
             corridorLayout: .errant,
-            deadEndRemoval: .some
+            deadEndRemoval: .some,
+            doors: .standard
         )
     }
 }

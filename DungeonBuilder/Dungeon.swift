@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class Dungeon: CustomStringConvertible {
+open class Dungeon  {
     let n_i: Int
     let n_j: Int
     
@@ -19,7 +19,10 @@ open class Dungeon: CustomStringConvertible {
     
     var nodes: [[Node]] = [[]]
     var rooms: [UInt: Room] = [:]
+    var doors: [Door] = []
     var connections: [String] = []
+    
+    // MARK: - Constructors
     
     /// Create a dungeon based on a base width and height.
     /// Please note that the actual width and height is
@@ -40,10 +43,16 @@ open class Dungeon: CustomStringConvertible {
         )
     }
     
+    // MARK: - Public
+    
     func node(at position: Position) -> Node {
         return self.nodes[position.i][position.j]
     }
-        
+}
+
+// MARK: - CustomStringConvertible
+
+extension Dungeon: CustomStringConvertible {
     public var description: String {
         var output = ""
         
@@ -66,10 +75,10 @@ open class Dungeon: CustomStringConvertible {
         }
         
         output += """
-           ┌─── LEGEND ───┐
-           │ ·  roomspace │
-           │ +  corridor  │
-           └──────────────┘
+        ┌─── LEGEND ───┐
+        │ ·  roomspace │
+        │ +  corridor  │
+        └──────────────┘
         
         """
         

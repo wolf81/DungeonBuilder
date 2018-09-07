@@ -11,13 +11,14 @@ import Foundation
 public struct Node: OptionSet {
     public var rawValue: UInt
     
+    // MARK: - singular values
     static let nothing = Node(rawValue: 0)
     static let blocked = Node(rawValue: 1 << 0)
     static let room = Node(rawValue: 1 << 1)
     static let corridor = Node(rawValue: 1 << 2)
     static let perimeter = Node(rawValue: 1 << 3)
     static let entrance = Node(rawValue: 1 << 4)
-    static let roomId = Node(rawValue: (1 << 16) - (1 << 6)) // TODO: verify same as 2^16 - 2^6
+    static let roomId = Node(rawValue: (1 << 16) - (1 << 6))
     static let arch = Node(rawValue: 1 << 16)
     static let door = Node(rawValue: 1 << 17)
     static let locked = Node(rawValue: 1 << 18)
@@ -26,8 +27,9 @@ public struct Node: OptionSet {
     static let portcullis = Node(rawValue: 1 << 21)
     static let stairDown = Node(rawValue: 1 << 22)
     static let stairUp = Node(rawValue: 1 << 23)
-    static let label = Node(rawValue: (1 << 32) - (1 << 24)) // TODO: verify same as 2^32 - 2^24
+    static let label = Node(rawValue: (1 << 32) - (1 << 24))
     
+    // MARK: - compound values
     static let openspace: Node = [.room, .corridor]
     static let doorspace: Node = [.arch, .door, .locked, .trapped, .secret, .portcullis]
     static let espace: Node = [.entrance, .doorspace, .label]
@@ -36,9 +38,13 @@ public struct Node: OptionSet {
     static let blockCorr: Node = [.blocked, .perimeter, .corridor]
     static let blockDoor: Node = [.blocked, .doorspace]
     
+    // MARK: - Constructors
+    
     public init(rawValue: UInt) {
         self.rawValue = rawValue
     }
+    
+    // MARK: - Public
     
     public var roomId: UInt {
         get {
@@ -87,11 +93,15 @@ public struct Node: OptionSet {
     }
 }
 
+// MARK: - Equatable
+
 extension Node: Equatable {
     public static func == (lhs: Node, rhs: Node) -> Bool {
         return lhs.rawValue == rhs.rawValue
     }
 }
+
+// MARK: - Hashable
 
 extension Node: Hashable {
     public func hash(into hasher: inout Hasher) {
