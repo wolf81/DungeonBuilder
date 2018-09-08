@@ -74,7 +74,7 @@ extension Dungeon: CustomStringConvertible {
                     default: output += " Π"
                     }
                 case _ where node.contains(.room): output += " ·"
-                case _ where node.contains(.corridor): output += " +"
+                case _ where node.contains(.corridor): output += " •"
                 default: output += "  "
                 }
             }
@@ -84,7 +84,7 @@ extension Dungeon: CustomStringConvertible {
         output += """
         ┌─── LEGEND ─────────────────────────────┐
         │ ·  roomspace  ∩  arch     ⁑  secret    │
-        │ +  corridor   Π  door     ‼  trapped   │
+        │ •  corridor   Π  door     ‼  trapped   │
         │               Φ  locked   ‡ portcullis │
         └────────────────────────────────────────┘
         
