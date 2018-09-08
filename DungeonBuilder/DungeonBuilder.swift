@@ -40,8 +40,7 @@ open class DungeonBuilder {
     
     private func clean(dungeon: Dungeon) {
         removeDeadEnds(in: dungeon)
-//        removePerimeters(in: dungeon)
-        fixDoors(in: dungeon)
+//        fixDoors(in: dungeon)
     }
     
     private func labelRooms(in dungeon: Dungeon) {
@@ -144,23 +143,13 @@ open class DungeonBuilder {
                 let r = position.i + corridorPosition[0]
                 let c = position.j + corridorPosition[1]
                 
-                if dungeon.nodes[r][c].intersection(.openspace) != .nothing {
+                if dungeon.nodes[r][c].intersection(.openspace).isEmpty == false {
                     return false
                 }
             }
         }
         
         return true
-    }
-    
-    private func removePerimeters(in dungeon: Dungeon) {
-        for r in 0 ..< dungeon.n_rows {
-            for c in 0 ..< dungeon.n_cols {
-                if dungeon.nodes[r][c].contains(.perimeter) {
-                    dungeon.nodes[r][c] = .nothing
-                }
-            }
-        }
     }
     
     private func applyMask(to dungeon: Dungeon) {
@@ -383,15 +372,9 @@ open class DungeonBuilder {
         guard out_cell.isDisjoint(with: .blocked) else {
             return nil
         }
-        
-        var out_id: UInt?
-        
-        if out_cell.contains(.room) {
-            out_id = out_cell.roomId
-            
-            if out_id == roomId {
-                return nil
-            }
+                
+        if out_cell.roomId == roomId {
+            return nil
         }
         
         return Sill(
@@ -400,7 +383,7 @@ open class DungeonBuilder {
             direction: direction,
             door_r: door_r,
             door_c: door_c,
-            out_id: out_id
+            out_id: out_cell.roomId
         )
     }
     

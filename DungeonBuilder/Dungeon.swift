@@ -54,14 +54,14 @@ open class Dungeon  {
 
 extension Dungeon: CustomStringConvertible {
     public var description: String {
-        var output = ""
+        var output = "\n" + ""
         
         for y in 0 ..< self.n_rows {
             for x in 0 ..< self.n_cols {
                 let node = self.nodes[y][x]
 
                 switch node {
-                case _ where node.contains(.perimeter): output += " ·"
+                case _ where node.contains(.perimeter): output += " `"
                 case let node where node.label != nil: output += " \(node.label!)"
                 case _ where node.intersection(.doorspace) != .nothing:
                     switch node {
@@ -82,11 +82,11 @@ extension Dungeon: CustomStringConvertible {
         }
         
         output += """
-        ┌─── LEGEND ─────────────────────────────┐
-        │ 1+ room nr.   ∩  arch     ⁑  secret    │
-        │ •  corridor   Π  door     ‼  trapped   │
-        │ ·  perimeter  Φ  locked   ‡ portcullis │
-        └────────────────────────────────────────┘
+        ┌─── LEGEND ──────────────────────────────┐
+        │ 1+ room nr.   ∩  arch     ⁑  secret     │
+        │ •  corridor   Π  door     ‼  trapped    │
+        │ `  perimeter  Φ  locked   ‡  portcullis │
+        └─────────────────────────────────────────┘
         
         """
         
