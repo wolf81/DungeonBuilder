@@ -40,7 +40,7 @@ open class DungeonBuilder {
     
     private func clean(dungeon: Dungeon) {
         removeDeadEnds(in: dungeon)
-        removePerimeters(in: dungeon)
+//        removePerimeters(in: dungeon)
         fixDoors(in: dungeon)
     }
     
