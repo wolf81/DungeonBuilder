@@ -75,7 +75,6 @@ extension Dungeon: CustomStringConvertible {
                     }
                 case _ where node.contains(.room): output += " ·"
                 case _ where node.contains(.corridor): output += " +"
-                case _ where node.contains(.perimeter): output += " #"
                 default: output += "  "
                 }
             }
