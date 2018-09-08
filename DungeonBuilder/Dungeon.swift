@@ -54,7 +54,7 @@ open class Dungeon  {
 
 extension Dungeon: CustomStringConvertible {
     public var description: String {
-        var output = "\n" + ""
+        var output = "\n"
         
         for y in 0 ..< self.n_rows {
             for x in 0 ..< self.n_cols {
@@ -84,8 +84,8 @@ extension Dungeon: CustomStringConvertible {
         output += """
         ┌─── LEGEND ──────────────────────────────┐
         │ 1+ room nr.   ∩  arch     ⁑  secret     │
-        │ •  corridor   Π  door     ‼  trapped    │
-        │ `  perimeter  Φ  locked   ‡  portcullis │
+        │ `  perimeter  Π  door     ‼  trapped    │
+        │ •  corridor   Φ  locked   ‡  portcullis │
         └─────────────────────────────────────────┘
         
         """
