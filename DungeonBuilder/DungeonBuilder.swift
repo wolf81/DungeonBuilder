@@ -256,6 +256,8 @@ open class DungeonBuilder {
 
         let door = Door(row: sill.door_r, col: sill.door_c, out_id: sill.out_id)
         room.doors[sill.direction]?.append(door)
+        
+        dungeon.nodes[sill.door_r][sill.door_c] = doorType()
     }
 
     private func fixDoors(in dungeon: Dungeon) {

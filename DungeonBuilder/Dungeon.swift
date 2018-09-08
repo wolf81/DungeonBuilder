@@ -59,26 +59,35 @@ extension Dungeon: CustomStringConvertible {
         for y in 0 ..< self.n_rows {
             for x in 0 ..< self.n_cols {
                 let node = self.nodes[y][x]
-                output += (node.contains(.blocked)
-                    ? "  " : (node.label != nil
-                        ? " \(node.label!)" : (node.contains(.room)
-                            ? " ·" : (node.contains(.corridor)
-                                ? " +" : (node.contains(.perimeter)
-                                    ? " #" : "  "
-                                )
-                            )
-                        )
-                    )
-                )
+
+                switch node {
+//                case _ where node.contains(.blocked): output += "  "
+                case let node where node.label != nil: output += " \(node.label!)"
+                case _ where node.intersection(.doorspace) != .nothing:
+                    switch node {
+                    case _ where node.contains(.arch): output += " ∩"
+                    case _ where node.contains(.locked): output += " Φ"
+                    case _ where node.contains(.trapped): output += " ‼"
+                    case _ where node.contains(.secret): output += " ⁑"
+                    case _ where node.contains(.portcullis): output += " ‡"
+                    case _ where node.contains(.door): fallthrough
+                    default: output += " Π"
+                    }
+                case _ where node.contains(.room): output += " ·"
+                case _ where node.contains(.corridor): output += " +"
+                case _ where node.contains(.perimeter): output += " #"
+                default: output += "  "
+                }
             }
             output += "\n"
         }
         
         output += """
-        ┌─── LEGEND ───┐
-        │ ·  roomspace │
-        │ +  corridor  │
-        └──────────────┘
+        ┌─── LEGEND ─────────────────────────────┐
+        │ ·  roomspace  ∩  arch     ⁑  secret    │
+        │ +  corridor   Π  door     ‼  trapped   │
+        │               Φ  locked   ‡ portcullis │
+        └────────────────────────────────────────┘
         
         """
         
