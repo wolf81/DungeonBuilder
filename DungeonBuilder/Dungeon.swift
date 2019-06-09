@@ -61,7 +61,6 @@ extension Dungeon: CustomStringConvertible {
                 let node = self.nodes[y][x]
 
                 switch node {
-                case _ where node.contains(.perimeter): output += " `"
                 case let node where node.label != nil: output += " \(node.label!)"
                 case _ where node.intersection(.doorspace) != .nothing:
                     switch node {
@@ -73,7 +72,7 @@ extension Dungeon: CustomStringConvertible {
                     case _ where node.contains(.door): fallthrough
                     default: output += " Π"
                     }
-                case _ where node.contains(.room): output += "  "
+                case _ where node.contains(.room): output += " `"
                 case _ where node.contains(.corridor): output += " •"
                 default: output += "  "
                 }

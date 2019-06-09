@@ -40,7 +40,7 @@ open class DungeonBuilder {
     
     private func clean(dungeon: Dungeon) {
         removeDeadEnds(in: dungeon)
-//        fixDoors(in: dungeon)
+        fixDoors(in: dungeon)
     }
     
     private func labelRooms(in dungeon: Dungeon) {
@@ -182,7 +182,7 @@ open class DungeonBuilder {
             let r = i * 2 + 1
             
             for j in (0 ..< dungeon.n_j) {
-                let c = i * 2 + 1
+                let c = j * 2 + 1
                 
                 guard dungeon.nodes[r][c].isDisjoint(with: .corridor) else {
                     continue
@@ -256,25 +256,24 @@ open class DungeonBuilder {
             guard let room = dungeon.rooms[roomKey] else {
                 continue
             }
-
+            
             for direction in room.doors.keys.sorted() {
-                guard let doors = room.doors[direction] else {
+                guard let doors = room.doors[direction], doors.count > 0 else {
                     continue
                 }
                 
+                var fixedDoors: [Door] = []
                 for door in doors {
-                    var fixedDoors: [Door] = []
+                    let node = dungeon.nodes[door.row][door.col]
+                    guard node.isDisjoint(with: .openspace) == false else {
+                        continue
+                    }
 
                     let doorKey = "\(door.row).\(door.col)"
 
                     if fixed.contains(doorKey) {
                         fixedDoors.append(door)
                     } else {
-                        let node = dungeon.nodes[door.row][door.col]
-                        guard node.isDisjoint(with: .openspace) == false else {
-                            continue
-                        }
-
                         if let out_id = door.out_id {
                             let out_dir = direction.opposite
                             dungeon.rooms[out_id]?.doors[out_dir]?.append(door)
@@ -282,13 +281,16 @@ open class DungeonBuilder {
                         fixedDoors.append(door)
                         fixed.append(doorKey)
                     }
-                    
-                    if fixedDoors.count > 0 {
-                        room.doors[direction] = fixedDoors
-                        dungeon.doors.append(contentsOf: fixedDoors)
-                    } else {
-                        room.doors.removeValue(forKey: direction)
-                    }
+                }
+                
+                if fixedDoors.count > 0 {
+                    dungeon.rooms[roomKey]?.doors[direction] = fixedDoors
+                    dungeon.doors.append(contentsOf: fixedDoors)
+                } else {
+                    dungeon.rooms[roomKey]?.doors[direction]?.forEach({ (door) in
+                        dungeon.nodes[door.row][door.col] = .perimeter
+                    })
+                    dungeon.rooms[roomKey]?.doors[direction] = []
                 }
             }
         }
@@ -366,7 +368,7 @@ open class DungeonBuilder {
         }
         
         let out_r = door_r + direction.y
-        let out_c = door_r + direction.x
+        let out_c = door_c + direction.x
         let out_cell = dungeon.nodes[out_r][out_c]
         
         guard out_cell.isDisjoint(with: .blocked) else {
@@ -439,7 +441,7 @@ open class DungeonBuilder {
         for r in rowIdxs[0] ... rowIdxs[1] {
             for c in colIdxs[0] ... colIdxs[1] {
                 let cell = dungeon.nodes[r][c]                
-                if !cell.isDisjoint(with: .blockCorr) {
+                if cell.intersection(.blockCorr).isEmpty == false {
                     return false
                 }
             }
