@@ -412,14 +412,13 @@ open class DungeonBuilder {
         let origin = Position(i: rMid, j: cMid)
         let destination = Position(i: r2, j: c2)
         if soundTunnel(in: dungeon, origin: origin, destination: destination) {
-            delveTunnel(in: dungeon, origin: origin, destination: destination)
-            return true
+            return delveTunnel(in: dungeon, origin: Position(i: r1, j: c1), destination: destination)
         }
         
         return false
     }
     
-    private func delveTunnel(in dungeon: Dungeon, origin: Position, destination: Position) {
+    private func delveTunnel(in dungeon: Dungeon, origin: Position, destination: Position) -> Bool {
         var b = [origin.i, destination.i].sorted()
         var c = [origin.j, destination.j].sorted()
         
@@ -429,6 +428,8 @@ open class DungeonBuilder {
                 dungeon.nodes[e][d].insert(.corridor)
             }
         }
+        
+        return true
     }
     
     private func soundTunnel(in dungeon: Dungeon, origin: Position, destination: Position) -> Bool {
@@ -441,7 +442,7 @@ open class DungeonBuilder {
         for r in rowIdxs[0] ... rowIdxs[1] {
             for c in colIdxs[0] ... colIdxs[1] {
                 let cell = dungeon.nodes[r][c]                
-                if cell.intersection(.blockCorr).isEmpty == false {
+                guard cell.isDisjoint(with: .blockCorr) else {
                     return false
                 }
             }
