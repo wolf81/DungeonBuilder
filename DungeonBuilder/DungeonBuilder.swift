@@ -49,7 +49,7 @@ open class DungeonBuilder {
             let id = String("\(roomId)")
             let len = id.count
             let midR = Int((room.north + room.south) / 2)
-            let midC = Int((room.west + room.east) / 2)
+            let midC = Int((room.west + room.east - len) / 2) + 1
             for i in (0 ..< len) {
                 let c = id[i]
                 let character = Character(String(c))
@@ -143,7 +143,7 @@ open class DungeonBuilder {
                 let r = position.i + corridorPosition[0]
                 let c = position.j + corridorPosition[1]
                 
-                if dungeon.nodes[r][c].intersection(.openspace).isEmpty == false {
+                guard dungeon.nodes[r][c].isDisjoint(with: .openspace) else {
                     return false
                 }
             }
@@ -201,7 +201,7 @@ open class DungeonBuilder {
     
     private func openRoom(in dungeon: Dungeon, roomId: UInt) {
         var sills = doorSills(for: dungeon, roomId: roomId)
-        
+
         guard let room = dungeon.rooms[roomId], sills.count > 0 else {
             return
         }
@@ -221,14 +221,13 @@ open class DungeonBuilder {
                 continue
             }
             
-            if let out_id = sill.out_id {
+            if let out_id = sill.out_id, out_id != 0 {
                 let ids = [roomId, out_id].sorted()
                 let connection = "\(ids[0]),\(ids[1])"
                 if dungeon.connections.contains(connection) == false {
                     openDoor(for: dungeon, room: room, sill: sill)
                     dungeon.connections.append(connection)
                 }
-                // TODO
             } else {
                 openDoor(for: dungeon, room: room, sill: sill)
             }
@@ -265,7 +264,7 @@ open class DungeonBuilder {
                 var fixedDoors: [Door] = []
                 for door in doors {
                     let node = dungeon.nodes[door.row][door.col]
-                    guard node.isDisjoint(with: .openspace) == false else {
+                    guard node.intersection(.openspace).isEmpty == false else {
                         continue
                     }
 
@@ -285,12 +284,12 @@ open class DungeonBuilder {
                 
                 if fixedDoors.count > 0 {
                     dungeon.rooms[roomKey]?.doors[direction] = fixedDoors
-                    dungeon.doors.append(contentsOf: fixedDoors)
+//                    dungeon.doors.append(contentsOf: fixedDoors)
                 } else {
                     dungeon.rooms[roomKey]?.doors[direction]?.forEach({ (door) in
                         dungeon.nodes[door.row][door.col] = .perimeter
                     })
-                    dungeon.rooms[roomKey]?.doors[direction] = []
+                    dungeon.rooms[roomKey]?.doors.removeValue(forKey: direction)
                 }
             }
         }
@@ -385,7 +384,7 @@ open class DungeonBuilder {
             direction: direction,
             door_r: door_r,
             door_c: door_c,
-            out_id: out_cell.roomId
+            out_id: out_cell.roomId > 0 ? out_cell.roomId : nil
         )
     }
     
@@ -545,7 +544,7 @@ open class DungeonBuilder {
                 var node = dungeon.nodes[r][c]
                 
                 if node.contains(.entrance) {
-                   node.remove(.espace)
+                    node.remove(.espace)
                 } else if node.contains(.perimeter) {
                     node.remove(.perimeter)
                 }
