@@ -78,7 +78,7 @@ open class DungeonBuilder {
                 let c = j * 2 + 1
                 let node = dungeon.nodes[r][c]
                 
-                if node.isDisjoint(with: .openspace), node.contains(.stairs) {
+                if node.intersection(.openspace).isEmpty == false, node.contains(.stairs) {
                     continue
                 }
                 
@@ -116,9 +116,6 @@ open class DungeonBuilder {
                 if let recurseInfo = directionCloseEndInfo[.recurse] as? [Int] {
                     let r = position.i + recurseInfo[0]
                     let c = position.j + recurseInfo[1]
-                    if !(0 ..< dungeon.n_rows).contains(r) || !(0 ..< dungeon.n_cols).contains(c) {
-                        continue
-                    }
                     
                     collapseTunnel(in: dungeon, position: Position(i: r, j: c), directionCloseInfo: directionCloseInfo)
                 }
@@ -164,7 +161,7 @@ open class DungeonBuilder {
             let rv = mask[Int(Float(r) * mr)]
             for cv in 0 ..< dungeon.n_cols {
                 if rv[Int(Float(cv) * mc)] == 0 {
-                    dungeon.nodes[r][cv].insert(.blocked)
+                    dungeon.nodes[r][cv] = .blocked
                 }
             }
         }
@@ -221,7 +218,7 @@ open class DungeonBuilder {
                 continue
             }
             
-            if let out_id = sill.out_id, out_id != 0 {
+            if let out_id = sill.out_id {
                 let ids = [roomId, out_id].sorted()
                 let connection = "\(ids[0]),\(ids[1])"
                 if dungeon.connections.contains(connection) == false {
@@ -265,6 +262,7 @@ open class DungeonBuilder {
                 for door in doors {
                     let node = dungeon.nodes[door.row][door.col]
                     guard node.intersection(.openspace).isEmpty == false else {
+                        dungeon.nodes[door.row][door.col] = []
                         continue
                     }
 
@@ -284,7 +282,6 @@ open class DungeonBuilder {
                 
                 if fixedDoors.count > 0 {
                     dungeon.rooms[roomKey]?.doors[direction] = fixedDoors
-//                    dungeon.doors.append(contentsOf: fixedDoors)
                 } else {
                     dungeon.rooms[roomKey]?.doors[direction]?.forEach({ (door) in
                         dungeon.nodes[door.row][door.col] = .perimeter
@@ -441,7 +438,7 @@ open class DungeonBuilder {
         for r in rowIdxs[0] ... rowIdxs[1] {
             for c in colIdxs[0] ... colIdxs[1] {
                 let cell = dungeon.nodes[r][c]                
-                guard cell.isDisjoint(with: .blockCorr) else {
+                guard cell.intersection(.blockCorr).isEmpty else {
                     return false
                 }
             }
