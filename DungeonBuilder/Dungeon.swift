@@ -83,7 +83,7 @@ extension Dungeon: CustomStringConvertible {
         output += """
         ┌─── LEGEND ──────────────────────────────┐
         │ 1+ room nr.   ∩  arch     ⁑  secret     │
-        │ `  perimeter  Π  door     ‼  trapped    │
+        │ `  room       Π  door     ‼  trapped    │
         │ •  corridor   Φ  locked   ‡  portcullis │
         └─────────────────────────────────────────┘
         
