@@ -82,8 +82,8 @@ Print the dungeon to see a simplified map in the debug console. For example when
      •                   •   ` ` ` ` ` ` `       ` ` ` ` ` ` ` ` ` ` `   ⁑           •   •  
      • • • • • • • • • • •   ` ` ` ` ` ` `       ` ` ` ` ` ` ` ` ` ` `   • • • • • • • • •  
                                                                                             
-  ┌─── LEGEND ──────────────────────────────┐
-  │ 1+ room nr.   ∩  arch     ⁑  secret     │
-  │ `  room       Π  door     ‼  trapped    │
-  │ •  corridor   Φ  locked   ‡  portcullis │
-  └─────────────────────────────────────────┘
+    ┌─── LEGEND ──────────────────────────────┐
+    │ 1+ room nr.   ∩  arch     ⁑  secret     │
+    │ `  room       Π  door     ‼  trapped    │
+    │ •  corridor   Φ  locked   ‡  portcullis │
+    └─────────────────────────────────────────┘
