@@ -45,7 +45,7 @@ open class Configuration {
             roomSize: .medium,
             roomLayout: .scattered,
             corridorLayout: .errant,
-            deadEndRemoval: .some,
+            deadEndRemoval: .all,
             doors: .standard
         )
     }

@@ -116,7 +116,10 @@ open class DungeonBuilder {
                 if let recurseInfo = directionCloseEndInfo[.recurse] as? [Int] {
                     let r = position.i + recurseInfo[0]
                     let c = position.j + recurseInfo[1]
-                    
+                    if !(0 ..< dungeon.n_rows).contains(r) || !(0 ..< dungeon.n_cols).contains(c) {
+                        continue
+                    }
+
                     collapseTunnel(in: dungeon, position: Position(i: r, j: c), directionCloseInfo: directionCloseInfo)
                 }
             }
