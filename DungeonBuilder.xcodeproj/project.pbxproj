@@ -26,6 +26,8 @@
 		790A2B2F213F8A7000BBE94D /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Position.swift */; };
 		790A2B32213FEA7300BBE94D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B31213FEA7300BBE94D /* Direction.swift */; };
 		790A2B382140D3EF00BBE94D /* Sill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B372140D3EF00BBE94D /* Sill.swift */; };
+		7929FBD222AFAD5A003C1964 /* DungeonBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7929FBD022AFAD5A003C1964 /* DungeonBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7929FBDF22AFAD88003C1964 /* DungeonBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7929FBDD22AFAD88003C1964 /* DungeonBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		793DCBB42140EBC2004BA50D /* CloseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DCBB32140EBC2004BA50D /* CloseInfo.swift */; };
 		793DCBB62140EBD3004BA50D /* CloseType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 793DCBB52140EBD3004BA50D /* CloseType.swift */; };
 		799615EB21422AFC00117F3A /* Doors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 799615EA21422AFC00117F3A /* Doors.swift */; };
@@ -35,12 +37,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		790A2AFA213EB05700BBE94D /* PBXContainerItemProxy */ = {
+		7929FBEA22AFB02C003C1964 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 790A2AE6213EB05600BBE94D /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 790A2AEE213EB05600BBE94D;
-			remoteInfo = DungeonBuilder;
+			remoteInfo = "DungeonBuilder macOS";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -70,6 +72,12 @@
 		790A2B30213FE2F200BBE94D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		790A2B31213FEA7300BBE94D /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		790A2B372140D3EF00BBE94D /* Sill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sill.swift; sourceTree = "<group>"; };
+		7929FBCE22AFAD5A003C1964 /* DungeonBuilder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DungeonBuilder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7929FBD022AFAD5A003C1964 /* DungeonBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DungeonBuilder.h; sourceTree = "<group>"; };
+		7929FBD122AFAD5A003C1964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7929FBDB22AFAD88003C1964 /* DungeonBuilder.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DungeonBuilder.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7929FBDD22AFAD88003C1964 /* DungeonBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DungeonBuilder.h; sourceTree = "<group>"; };
+		7929FBDE22AFAD88003C1964 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		793DCBB32140EBC2004BA50D /* CloseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseInfo.swift; sourceTree = "<group>"; };
 		793DCBB52140EBD3004BA50D /* CloseType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseType.swift; sourceTree = "<group>"; };
 		799615EA21422AFC00117F3A /* Doors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Doors.swift; sourceTree = "<group>"; };
@@ -94,6 +102,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7929FBCB22AFAD5A003C1964 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7929FBD822AFAD88003C1964 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -104,6 +126,9 @@
 				790A2B29213F7C7E00BBE94D /* Donjon */,
 				790A2AF1213EB05600BBE94D /* DungeonBuilder */,
 				790A2AFC213EB05700BBE94D /* DungeonBuilderTests */,
+				7929FBE322AFADB4003C1964 /* DungeonBuilder macOS */,
+				7929FBCF22AFAD5A003C1964 /* DungeonBuilder iOS */,
+				7929FBDC22AFAD88003C1964 /* DungeonBuilder tvOS */,
 				790A2AF0213EB05600BBE94D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,6 +138,8 @@
 			children = (
 				790A2AEF213EB05600BBE94D /* DungeonBuilder.framework */,
 				790A2AF8213EB05700BBE94D /* DungeonBuilderTests.xctest */,
+				7929FBCE22AFAD5A003C1964 /* DungeonBuilder.framework */,
+				7929FBDB22AFAD88003C1964 /* DungeonBuilder.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -123,8 +150,6 @@
 				79E069582141201B000BBA8D /* Extensions */,
 				790A2B24213EBD6400BBE94D /* NumberGenerator */,
 				790A2B23213EBD4E00BBE94D /* Configuration */,
-				790A2AF2213EB05700BBE94D /* DungeonBuilder.h */,
-				790A2AF3213EB05700BBE94D /* Info.plist */,
 				790A2B09213EB07000BBE94D /* DungeonBuilder.swift */,
 				790A2B25213EC03E00BBE94D /* Dungeon.swift */,
 				790A2B0B213EB0B000BBE94D /* Node.swift */,
@@ -182,6 +207,33 @@
 			path = Donjon;
 			sourceTree = "<group>";
 		};
+		7929FBCF22AFAD5A003C1964 /* DungeonBuilder iOS */ = {
+			isa = PBXGroup;
+			children = (
+				7929FBD022AFAD5A003C1964 /* DungeonBuilder.h */,
+				7929FBD122AFAD5A003C1964 /* Info.plist */,
+			);
+			path = "DungeonBuilder iOS";
+			sourceTree = "<group>";
+		};
+		7929FBDC22AFAD88003C1964 /* DungeonBuilder tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				7929FBDD22AFAD88003C1964 /* DungeonBuilder.h */,
+				7929FBDE22AFAD88003C1964 /* Info.plist */,
+			);
+			path = "DungeonBuilder tvOS";
+			sourceTree = "<group>";
+		};
+		7929FBE322AFADB4003C1964 /* DungeonBuilder macOS */ = {
+			isa = PBXGroup;
+			children = (
+				790A2AF2213EB05700BBE94D /* DungeonBuilder.h */,
+				790A2AF3213EB05700BBE94D /* Info.plist */,
+			);
+			path = "DungeonBuilder macOS";
+			sourceTree = "<group>";
+		};
 		79E069582141201B000BBA8D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,12 +253,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7929FBC922AFAD5A003C1964 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7929FBD222AFAD5A003C1964 /* DungeonBuilder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7929FBD622AFAD88003C1964 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7929FBDF22AFAD88003C1964 /* DungeonBuilder.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		790A2AEE213EB05600BBE94D /* DungeonBuilder */ = {
+		790A2AEE213EB05600BBE94D /* DungeonBuilder macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 790A2B03213EB05700BBE94D /* Build configuration list for PBXNativeTarget "DungeonBuilder" */;
+			buildConfigurationList = 790A2B03213EB05700BBE94D /* Build configuration list for PBXNativeTarget "DungeonBuilder macOS" */;
 			buildPhases = (
 				790A2AEA213EB05600BBE94D /* Headers */,
 				790A2AEB213EB05600BBE94D /* Sources */,
@@ -217,7 +285,7 @@
 			);
 			dependencies = (
 			);
-			name = DungeonBuilder;
+			name = "DungeonBuilder macOS";
 			productName = DungeonBuilder;
 			productReference = 790A2AEF213EB05600BBE94D /* DungeonBuilder.framework */;
 			productType = "com.apple.product-type.framework";
@@ -233,12 +301,48 @@
 			buildRules = (
 			);
 			dependencies = (
-				790A2AFB213EB05700BBE94D /* PBXTargetDependency */,
+				7929FBEB22AFB02C003C1964 /* PBXTargetDependency */,
 			);
 			name = DungeonBuilderTests;
 			productName = DungeonBuilderTests;
 			productReference = 790A2AF8213EB05700BBE94D /* DungeonBuilderTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7929FBCD22AFAD5A003C1964 /* DungeonBuilder iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7929FBD522AFAD5A003C1964 /* Build configuration list for PBXNativeTarget "DungeonBuilder iOS" */;
+			buildPhases = (
+				7929FBC922AFAD5A003C1964 /* Headers */,
+				7929FBCA22AFAD5A003C1964 /* Sources */,
+				7929FBCB22AFAD5A003C1964 /* Frameworks */,
+				7929FBCC22AFAD5A003C1964 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DungeonBuilder iOS";
+			productName = "DungeonBuilder iOS";
+			productReference = 7929FBCE22AFAD5A003C1964 /* DungeonBuilder.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		7929FBDA22AFAD88003C1964 /* DungeonBuilder tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7929FBE022AFAD88003C1964 /* Build configuration list for PBXNativeTarget "DungeonBuilder tvOS" */;
+			buildPhases = (
+				7929FBD622AFAD88003C1964 /* Headers */,
+				7929FBD722AFAD88003C1964 /* Sources */,
+				7929FBD822AFAD88003C1964 /* Frameworks */,
+				7929FBD922AFAD88003C1964 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "DungeonBuilder tvOS";
+			productName = "DungeonBuilder tvOS";
+			productReference = 7929FBDB22AFAD88003C1964 /* DungeonBuilder.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -257,6 +361,12 @@
 					790A2AF7213EB05700BBE94D = {
 						CreatedOnToolsVersion = 10.0;
 					};
+					7929FBCD22AFAD5A003C1964 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
+					7929FBDA22AFAD88003C1964 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
 				};
 			};
 			buildConfigurationList = 790A2AE9213EB05600BBE94D /* Build configuration list for PBXProject "DungeonBuilder" */;
@@ -271,7 +381,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				790A2AEE213EB05600BBE94D /* DungeonBuilder */,
+				790A2AEE213EB05600BBE94D /* DungeonBuilder macOS */,
+				7929FBCD22AFAD5A003C1964 /* DungeonBuilder iOS */,
+				7929FBDA22AFAD88003C1964 /* DungeonBuilder tvOS */,
 				790A2AF7213EB05700BBE94D /* DungeonBuilderTests */,
 			);
 		};
@@ -286,6 +398,20 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		790A2AF6213EB05700BBE94D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7929FBCC22AFAD5A003C1964 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7929FBD922AFAD88003C1964 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -332,13 +458,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7929FBCA22AFAD5A003C1964 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7929FBD722AFAD88003C1964 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		790A2AFB213EB05700BBE94D /* PBXTargetDependency */ = {
+		7929FBEB22AFB02C003C1964 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 790A2AEE213EB05600BBE94D /* DungeonBuilder */;
-			targetProxy = 790A2AFA213EB05700BBE94D /* PBXContainerItemProxy */;
+			target = 790A2AEE213EB05600BBE94D /* DungeonBuilder macOS */;
+			targetProxy = 7929FBEA22AFB02C003C1964 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -399,6 +539,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = DungeonBuilder;
 				SDKROOT = macosx;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -456,6 +597,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = DungeonBuilder;
 				SDKROOT = macosx;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -477,15 +619,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = DungeonBuilder/Info.plist;
+				INFOPLIST_FILE = "DungeonBuilder macOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -505,15 +647,15 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = DungeonBuilder/Info.plist;
+				INFOPLIST_FILE = "DungeonBuilder macOS/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 4.2;
 			};
@@ -557,6 +699,112 @@
 			};
 			name = Release;
 		};
+		7929FBD322AFAD5A003C1964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = J6E64C67VU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "DungeonBuilder iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7929FBD422AFAD5A003C1964 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = J6E64C67VU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "DungeonBuilder iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7929FBE122AFAD88003C1964 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = J6E64C67VU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "DungeonBuilder tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+			};
+			name = Debug;
+		};
+		7929FBE222AFAD88003C1964 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = J6E64C67VU;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "DungeonBuilder tvOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.wolftrail.DungeonBuilder;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 11.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -569,7 +817,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		790A2B03213EB05700BBE94D /* Build configuration list for PBXNativeTarget "DungeonBuilder" */ = {
+		790A2B03213EB05700BBE94D /* Build configuration list for PBXNativeTarget "DungeonBuilder macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				790A2B04213EB05700BBE94D /* Debug */,
@@ -583,6 +831,24 @@
 			buildConfigurations = (
 				790A2B07213EB05700BBE94D /* Debug */,
 				790A2B08213EB05700BBE94D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7929FBD522AFAD5A003C1964 /* Build configuration list for PBXNativeTarget "DungeonBuilder iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7929FBD322AFAD5A003C1964 /* Debug */,
+				7929FBD422AFAD5A003C1964 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7929FBE022AFAD88003C1964 /* Build configuration list for PBXNativeTarget "DungeonBuilder tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7929FBE122AFAD88003C1964 /* Debug */,
+				7929FBE222AFAD88003C1964 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
