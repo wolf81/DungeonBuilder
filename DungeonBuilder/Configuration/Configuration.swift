@@ -22,7 +22,7 @@ open class Configuration {
         return closeArcCorridors.contains(self.corridorLayout)
     }
     
-    init(dungeonSize: DungeonSize,
+    public init(dungeonSize: DungeonSize,
          dungeonLayout: DungeonLayout,
          roomSize: RoomSize,
          roomLayout: RoomLayout,
@@ -38,7 +38,7 @@ open class Configuration {
         self.doors = doors
     }
     
-    static var Default: Configuration {
+    public static var Default: Configuration {
         return Configuration(
             dungeonSize: .medium,
             dungeonLayout: .rectangle,
