@@ -12,12 +12,12 @@ open class DungeonBuilder {
     let configuration: Configuration
     let numberGenerator: NumberGeneratable
     
-    init(configuration: Configuration, numberGenerator: NumberGeneratable? = nil) {
+    public init(configuration: Configuration, numberGenerator: NumberGeneratable? = nil) {
         self.configuration = configuration
         self.numberGenerator = numberGenerator ?? RandomNumberGenerator()
     }
     
-    func build(name: String) -> Dungeon {
+    public func build(name: String) -> Dungeon {
         let data = name.data(using: .utf8)!
         self.numberGenerator.seed(data: data)
         
