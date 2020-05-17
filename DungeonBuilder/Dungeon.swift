@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import SpriteKit
 
 public class Dungeon  {
     let n_i: Int
@@ -47,9 +46,13 @@ public class Dungeon  {
     }
     
     // MARK: - Public
+    
+    internal func getNodeAt(x: Int, y: Int) -> Node {
+        self.nodes[x][y]
+    }
         
     public subscript(x: Int, y: Int) -> Node {
-        return self.nodes[x][y]
+        return self.nodes[self.height - y - 1][x]
     }
 }
 

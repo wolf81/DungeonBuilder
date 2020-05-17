@@ -91,7 +91,7 @@ open class DungeonBuilder {
     }
     
     private func collapseTunnel(in dungeon: Dungeon, position: Position, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
-        if dungeon[position.i, position.j].isDisjoint(with: .openspace) {
+        if dungeon.getNodeAt(x: position.i, y: position.j).isDisjoint(with: .openspace) {
             return
         }
         
