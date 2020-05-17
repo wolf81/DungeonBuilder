@@ -7,20 +7,23 @@
 //
 
 import Foundation
+import SpriteKit
 
-open class Dungeon  {
+public class Dungeon  {
     let n_i: Int
     let n_j: Int
     
-    lazy var n_rows: Int = { return self.n_i * 2 + 1 }()
-    lazy var n_cols: Int = { return self.n_j * 2 + 1 }()
-    lazy var max_row: Int = { return self.n_rows - 1 }()
-    lazy var max_col: Int = { return self.n_cols - 1 }()
+    public lazy var height: Int = { return self.n_i * 2 + 1 }()
+    public lazy var width: Int = { return self.n_j * 2 + 1 }()
+    
+    lazy var maxRowIndex: Int = { return self.height - 1 }()
+    lazy var maxColumnIndex: Int = { return self.width - 1 }()
     
     var nodes: [[Node]] = [[]]
-    var rooms: [UInt: Room] = [:]
-    var doors: [Door] = []
-    var connections: [String] = []
+    
+    public var rooms: [UInt: Room] = [:]
+    public var doors: [Door] = []
+    public var connections: [String] = []
     
     // MARK: - Constructors
     
@@ -38,15 +41,15 @@ open class Dungeon  {
         self.nodes = Array(
             repeating: Array(
                 repeating: .nothing,
-                count: self.n_cols),
-            count: self.n_rows
+                count: self.width),
+            count: self.height
         )
     }
     
     // MARK: - Public
-    
-    func node(at position: Position) -> Node {
-        return self.nodes[position.i][position.j]
+        
+    public subscript(x: Int, y: Int) -> Node {
+        return self.nodes[x][y]
     }
 }
 
@@ -56,8 +59,8 @@ extension Dungeon: CustomStringConvertible {
     public var description: String {
         var output = "\n"
         
-        for y in 0 ..< self.n_rows {
-            for x in 0 ..< self.n_cols {
+        for y in 0 ..< self.height {
+            for x in 0 ..< self.width {
                 let node = self.nodes[y][x]
 
                 switch node {
