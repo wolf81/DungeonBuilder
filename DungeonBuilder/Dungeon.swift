@@ -13,16 +13,14 @@ public class Dungeon {
     
     public var width: Int { self.dungeon.width }
     public var height: Int { self.dungeon.height }
-    
-    internal var nodes: [[Node]] { self.dungeon.nodes }
-    
+        
     internal init(dungeon: DungeonInternal) {
         self.dungeon = dungeon
     }
     
     /// Retrieve a node from the dungeon.
     public subscript(x: Int, y: Int) -> Node {
-        return self.nodes[self.height - y - 1][x]
+        return self.dungeon.nodes[y][x]
     }
     
     /// Returns a dictionary of room ids and room data
@@ -47,7 +45,7 @@ extension Dungeon: CustomStringConvertible {
         
         for y in 0 ..< self.height {
             for x in 0 ..< self.width {
-                let node = self.nodes[y][x]
+                let node = self[x, y]
 
                 switch node {
                 case let node where node.label != nil: output += " \(node.label!)"
@@ -77,6 +75,12 @@ extension Dungeon: CustomStringConvertible {
         └─────────────────────────────────────────┘
         
         """
+        
+//        for (roomId, room) in roomInfo.sorted(by: { (kv1, kv2) -> Bool in
+//            kv1.key < kv2.key
+//        }) {
+//            output += "\(roomId) @ \(room.coord.x).\(room.coord.y) (\(room.width) x \(room.height)) \n"
+//        }
         
         return output
     }
