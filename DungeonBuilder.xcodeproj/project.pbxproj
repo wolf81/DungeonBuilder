@@ -23,7 +23,7 @@
 		790A2B22213EB88000BBE94D /* RandomNumberGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B21213EB88000BBE94D /* RandomNumberGenerator.swift */; };
 		790A2B26213EC03E00BBE94D /* DungeonInternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B25213EC03E00BBE94D /* DungeonInternal.swift */; };
 		790A2B28213EE68F00BBE94D /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B27213EE68F00BBE94D /* Room.swift */; };
-		790A2B2F213F8A7000BBE94D /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Position.swift */; };
+		790A2B2F213F8A7000BBE94D /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Coordinate.swift */; };
 		790A2B32213FEA7300BBE94D /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B31213FEA7300BBE94D /* Direction.swift */; };
 		790A2B382140D3EF00BBE94D /* Sill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B372140D3EF00BBE94D /* Sill.swift */; };
 		7929FBD222AFAD5A003C1964 /* DungeonBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 7929FBD022AFAD5A003C1964 /* DungeonBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -37,8 +37,8 @@
 		792E4556247257680088FBD7 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B0B213EB0B000BBE94D /* Node.swift */; };
 		792E45572472576B0088FBD7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B27213EE68F00BBE94D /* Room.swift */; };
 		792E45582472576B0088FBD7 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B27213EE68F00BBE94D /* Room.swift */; };
-		792E45592472576E0088FBD7 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Position.swift */; };
-		792E455A2472576F0088FBD7 /* Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Position.swift */; };
+		792E45592472576E0088FBD7 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Coordinate.swift */; };
+		792E455A2472576F0088FBD7 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B2E213F8A7000BBE94D /* Coordinate.swift */; };
 		792E455B247257710088FBD7 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B31213FEA7300BBE94D /* Direction.swift */; };
 		792E455C247257710088FBD7 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B31213FEA7300BBE94D /* Direction.swift */; };
 		792E455D247257740088FBD7 /* Sill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 790A2B372140D3EF00BBE94D /* Sill.swift */; };
@@ -115,7 +115,7 @@
 		790A2B27213EE68F00BBE94D /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		790A2B2A213F7C9A00BBE94D /* dungeon.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = dungeon.pl; sourceTree = "<group>"; };
 		790A2B2C213F7CB100BBE94D /* dungeon.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = dungeon.js; sourceTree = "<group>"; };
-		790A2B2E213F8A7000BBE94D /* Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Position.swift; sourceTree = "<group>"; };
+		790A2B2E213F8A7000BBE94D /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		790A2B30213FE2F200BBE94D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		790A2B31213FEA7300BBE94D /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		790A2B372140D3EF00BBE94D /* Sill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sill.swift; sourceTree = "<group>"; };
@@ -202,7 +202,7 @@
 				790A2B25213EC03E00BBE94D /* DungeonInternal.swift */,
 				790A2B0B213EB0B000BBE94D /* Node.swift */,
 				790A2B27213EE68F00BBE94D /* Room.swift */,
-				790A2B2E213F8A7000BBE94D /* Position.swift */,
+				790A2B2E213F8A7000BBE94D /* Coordinate.swift */,
 				790A2B31213FEA7300BBE94D /* Direction.swift */,
 				790A2B372140D3EF00BBE94D /* Sill.swift */,
 				793DCBB32140EBC2004BA50D /* CloseInfo.swift */,
@@ -478,7 +478,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				790A2B2F213F8A7000BBE94D /* Position.swift in Sources */,
+				790A2B2F213F8A7000BBE94D /* Coordinate.swift in Sources */,
 				790A2B14213EB3A200BBE94D /* RoomLayout.swift in Sources */,
 				790A2B1A213EB42F00BBE94D /* CorridorLayout.swift in Sources */,
 				790A2B12213EB39B00BBE94D /* DungeonLayout.swift in Sources */,
@@ -535,7 +535,7 @@
 				792E457E2472579E0088FBD7 /* RandomNumberGenerator.swift in Sources */,
 				792E45622472577B0088FBD7 /* CloseType.swift in Sources */,
 				792E457D2472579E0088FBD7 /* NumberGeneratable.swift in Sources */,
-				792E45592472576E0088FBD7 /* Position.swift in Sources */,
+				792E45592472576E0088FBD7 /* Coordinate.swift in Sources */,
 				792E4578247257990088FBD7 /* DungeonSize.swift in Sources */,
 				792E4553247257630088FBD7 /* DungeonInternal.swift in Sources */,
 				792E455B247257710088FBD7 /* Direction.swift in Sources */,
@@ -565,7 +565,7 @@
 				792E457C2472579D0088FBD7 /* RandomNumberGenerator.swift in Sources */,
 				792E45612472577A0088FBD7 /* CloseType.swift in Sources */,
 				792E457B2472579D0088FBD7 /* NumberGeneratable.swift in Sources */,
-				792E455A2472576F0088FBD7 /* Position.swift in Sources */,
+				792E455A2472576F0088FBD7 /* Coordinate.swift in Sources */,
 				792E4571247257990088FBD7 /* DungeonSize.swift in Sources */,
 				792E4554247257640088FBD7 /* DungeonInternal.swift in Sources */,
 				792E455C247257710088FBD7 /* Direction.swift in Sources */,

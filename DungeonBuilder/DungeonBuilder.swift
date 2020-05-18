@@ -83,15 +83,15 @@ open class DungeonBuilder {
                 }
                 
                 if (deadEndRemoval == .all) || (self.numberGenerator.next(maxValue: 100) < percentage) {
-                    let position = Position(i: r, j: c)
+                    let position = Coordinate(r, c)
                     collapseTunnel(in: dungeon, position: position, directionCloseInfo: closeInfo)
                 }
             }
         }
     }
     
-    private func collapseTunnel(in dungeon: DungeonInternal, position: Position, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
-        if dungeon[position.i, position.j].isDisjoint(with: .openspace) {
+    private func collapseTunnel(in dungeon: DungeonInternal, position: Coordinate, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
+        if dungeon[position.x, position.y].isDisjoint(with: .openspace) {
             return
         }
         
@@ -101,36 +101,36 @@ open class DungeonBuilder {
             if checkTunnel(in: dungeon, position: position, closeInfo: directionCloseEndInfo) {
                 if let closeInfo = directionCloseEndInfo[.close] as? [[Int]] {
                     for closePosition in closeInfo {
-                        let r = position.i + closePosition[0]
-                        let c = position.j + closePosition[1]
+                        let r = position.x + closePosition[0]
+                        let c = position.y + closePosition[1]
                         dungeon.nodes[r][c] = .nothing
                     }
                 }
                 
                 if let openInfo = directionCloseEndInfo[.open] as? [Int] {
-                    let r = position.i + openInfo[0]
-                    let c = position.j + openInfo[1]                    
+                    let r = position.x + openInfo[0]
+                    let c = position.y + openInfo[1]
                     dungeon.nodes[r][c].insert(.corridor)
                 }
                 
                 if let recurseInfo = directionCloseEndInfo[.recurse] as? [Int] {
-                    let r = position.i + recurseInfo[0]
-                    let c = position.j + recurseInfo[1]
+                    let r = position.x + recurseInfo[0]
+                    let c = position.y + recurseInfo[1]
                     if !(0 ..< dungeon.height).contains(r) || !(0 ..< dungeon.width).contains(c) {
                         continue
                     }
 
-                    collapseTunnel(in: dungeon, position: Position(i: r, j: c), directionCloseInfo: directionCloseInfo)
+                    collapseTunnel(in: dungeon, position: Coordinate(r, c), directionCloseInfo: directionCloseInfo)
                 }
             }
         }
     }
     
-    private func checkTunnel(in dungeon: DungeonInternal, position: Position, closeInfo: [CloseType: [Any]]) -> Bool {
+    private func checkTunnel(in dungeon: DungeonInternal, position: Coordinate, closeInfo: [CloseType: [Any]]) -> Bool {
         if let corridorInfo = closeInfo[.corridor] as? [[Int]] {
             for corridorPosition in corridorInfo {
-                let r = position.i + corridorPosition[0]
-                let c = position.j + corridorPosition[1]
+                let r = position.x + corridorPosition[0]
+                let c = position.y + corridorPosition[1]
                 
                 if dungeon.nodes[r][c].isDisjoint(with: .corridor) {
                     return false
@@ -140,8 +140,8 @@ open class DungeonBuilder {
         
         if let walledInfo = closeInfo[.walled] as? [[Int]] {
             for corridorPosition in walledInfo {
-                let r = position.i + corridorPosition[0]
-                let c = position.j + corridorPosition[1]
+                let r = position.x + corridorPosition[0]
+                let c = position.y + corridorPosition[1]
                 
                 guard dungeon.nodes[r][c].isDisjoint(with: .openspace) else {
                     return false
@@ -188,7 +188,7 @@ open class DungeonBuilder {
                     continue
                 }
                 
-                makeTunnel(in: dungeon, position: Position(i: i, j: j))
+                makeTunnel(in: dungeon, position: Coordinate(i, j))
             }
         }
     }
@@ -320,7 +320,7 @@ open class DungeonBuilder {
         
         if room.north >= 3 {
             for c in stride(from: room.west, to: room.east, by: 2) {
-                let position = Position(i: room.north, j: c)
+                let position = Coordinate(room.north, c)
                 if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .north) {
                     sills.append(sill)
                 }
@@ -329,7 +329,7 @@ open class DungeonBuilder {
         
         if room.south <= (dungeon.height - 3) {
             for c in stride(from: room.west, to: room.east, by: 2) {
-                let position = Position(i: room.south, j: c)
+                let position = Coordinate(room.south, c)
                 if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .south) {
                     sills.append(sill)
                 }
@@ -338,7 +338,7 @@ open class DungeonBuilder {
 
         if room.west >= 3 {
             for r in stride(from: room.north, to: room.south, by: 2) {
-                let position = Position(i: r, j: room.west)
+                let position = Coordinate(r, room.west)
                 if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .west) {
                     sills.append(sill)
                 }
@@ -347,7 +347,7 @@ open class DungeonBuilder {
         
         if room.east <= (dungeon.width - 3) {
             for r in stride(from: room.north, to: room.south, by: 2) {
-                let position = Position(i: r, j: room.east)
+                let position = Coordinate(r, room.east)
                 if let sill = checkSill(for: dungeon, roomId: roomId, position: position, direction: .east) {
                     sills.append(sill)
                 }
@@ -357,9 +357,9 @@ open class DungeonBuilder {
         return sills
     }
     
-    private func checkSill(for dungeon: DungeonInternal, roomId: UInt, position: Position, direction: Direction) -> Sill? {
-        let door_r = position.i + direction.y
-        let door_c = position.j + direction.x
+    private func checkSill(for dungeon: DungeonInternal, roomId: UInt, position: Coordinate, direction: Direction) -> Sill? {
+        let door_r = position.x + direction.y
+        let door_c = position.y + direction.x
         let door_cell = dungeon.nodes[door_r][door_c]
         
         guard door_cell.contains(.perimeter), door_cell.isDisjoint(with: .blockDoor) else {
@@ -379,8 +379,8 @@ open class DungeonBuilder {
         }
         
         return Sill(
-            r: position.i,
-            c: position.j,
+            r: position.x,
+            c: position.y,
             direction: direction,
             door_r: door_r,
             door_c: door_c,
@@ -388,38 +388,38 @@ open class DungeonBuilder {
         )
     }
     
-    private func makeTunnel(in dungeon: DungeonInternal, position: Position, with direction: Direction? = nil) {
+    private func makeTunnel(in dungeon: DungeonInternal, position: Coordinate, with direction: Direction? = nil) {
         let randomDirections = tunnelDirections(with: direction)
         
         for randomDirection in randomDirections {
             if openTunnel(in: dungeon, position: position, direction: randomDirection) {
-                let r = position.i + randomDirection.y
-                let c = position.j + randomDirection.x
-                makeTunnel(in: dungeon, position: Position(i: r, j: c), with: randomDirection)
+                let r = position.x + randomDirection.y
+                let c = position.y + randomDirection.x
+                makeTunnel(in: dungeon, position: Coordinate(r, c), with: randomDirection)
             }
         }
     }
     
-    private func openTunnel(in dungeon: DungeonInternal, position: Position, direction: Direction) -> Bool {
-        let r1 = position.i * 2 + 1
-        let c1 = position.j * 2 + 1
-        let r2 = (position.i + direction.y) * 2 + 1
-        let c2 = (position.j + direction.x) * 2 + 1
+    private func openTunnel(in dungeon: DungeonInternal, position: Coordinate, direction: Direction) -> Bool {
+        let r1 = position.x * 2 + 1
+        let c1 = position.y * 2 + 1
+        let r2 = (position.x + direction.y) * 2 + 1
+        let c2 = (position.y + direction.x) * 2 + 1
         let rMid = (r1 + r2) / 2
         let cMid = (c1 + c2) / 2
         
-        let origin = Position(i: rMid, j: cMid)
-        let destination = Position(i: r2, j: c2)
+        let origin = Coordinate(rMid, cMid)
+        let destination = Coordinate(r2, c2)
         if soundTunnel(in: dungeon, origin: origin, destination: destination) {
-            return delveTunnel(in: dungeon, origin: Position(i: r1, j: c1), destination: destination)
+            return delveTunnel(in: dungeon, origin: Coordinate(r1, c1), destination: destination)
         }
         
         return false
     }
     
-    private func delveTunnel(in dungeon: DungeonInternal, origin: Position, destination: Position) -> Bool {
-        let b = [origin.i, destination.i].sorted()
-        let c = [origin.j, destination.j].sorted()
+    private func delveTunnel(in dungeon: DungeonInternal, origin: Coordinate, destination: Coordinate) -> Bool {
+        let b = [origin.x, destination.x].sorted()
+        let c = [origin.y, destination.y].sorted()
         
         for e in b[0] ... b[1] {
             for d in c[0] ... c[1] {
@@ -431,12 +431,12 @@ open class DungeonBuilder {
         return true
     }
     
-    private func soundTunnel(in dungeon: DungeonInternal, origin: Position, destination: Position) -> Bool {
-        guard (0 ..< dungeon.height).contains(destination.i) else { return false }
-        guard (0 ..< dungeon.width).contains(destination.j) else { return false }
+    private func soundTunnel(in dungeon: DungeonInternal, origin: Coordinate, destination: Coordinate) -> Bool {
+        guard (0 ..< dungeon.height).contains(destination.x) else { return false }
+        guard (0 ..< dungeon.width).contains(destination.y) else { return false }
         
-        let rowIdxs = [origin.i, destination.i].sorted()
-        let colIdxs = [origin.j, destination.j].sorted()
+        let rowIdxs = [origin.x, destination.x].sorted()
+        let colIdxs = [origin.y, destination.y].sorted()
         
         for r in rowIdxs[0] ... rowIdxs[1] {
             for c in colIdxs[0] ... colIdxs[1] {
@@ -492,7 +492,7 @@ open class DungeonBuilder {
                 emplaceRoom(
                     in: dungeon,
                     roomSize: self.configuration.roomSize,
-                    position: Position(i: i, j: j)
+                    position: Coordinate(i, j)
                 )
             }
         }
@@ -513,7 +513,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func emplaceRoom(in dungeon: DungeonInternal, roomSize: RoomSize, position: Position = .zero) {
+    private func emplaceRoom(in dungeon: DungeonInternal, roomSize: RoomSize, position: Coordinate = .zero) {
         if dungeon.rooms.count > 999 {
             return
         }
@@ -587,25 +587,25 @@ open class DungeonBuilder {
         dungeon.rooms[roomId] = room
     }
     
-    private func makeRoom(for dungeon: DungeonInternal, roomSize: RoomSize, position: Position) -> Room {
+    private func makeRoom(for dungeon: DungeonInternal, roomSize: RoomSize, position: Coordinate) -> Room {
         let radixBase = roomSize.radix
         let size = roomSize.size
         
         var height: Int = 0
         var width: Int = 0
 
-        var i = position.i
-        var j = position.j
+        var i = position.x
+        var j = position.y
         
         if i != 0 {
-            let radix = min(max(dungeon.n_i - size - position.i, 0), radixBase)
+            let radix = min(max(dungeon.n_i - size - position.x, 0), radixBase)
             height = self.numberGenerator.next(maxValue: radix) + size
         } else {
             height = self.numberGenerator.next(maxValue: radixBase) + size
         }
         
         if j != 0 {
-            let radix = min(max(dungeon.n_j - size - position.j, 0), radixBase)
+            let radix = min(max(dungeon.n_j - size - position.y, 0), radixBase)
             width = self.numberGenerator.next(maxValue: radix) + size
         } else {
             width = self.numberGenerator.next(maxValue: radixBase) + size
