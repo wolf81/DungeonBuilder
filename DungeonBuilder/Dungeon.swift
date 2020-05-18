@@ -26,7 +26,7 @@ public class Dungeon {
     }
     
     /// Returns a dictionary of room ids and room data
-    lazy var roomInfo: [UInt: Room] = {
+    public lazy var roomInfo: [UInt: Room] = {
         var roomInfo: [UInt: Room] = [:]
                 
         for (roomId, room) in self.dungeon.rooms {
