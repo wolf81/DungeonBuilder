@@ -2,58 +2,41 @@
 //  Dungeon.swift
 //  DungeonBuilder
 //
-//  Created by Wolfgang Schreurs on 04/09/2018.
-//  Copyright © 2018 Wolftrail. All rights reserved.
+//  Created by Wolfgang Schreurs on 18/05/2020.
+//  Copyright © 2020 Wolftrail. All rights reserved.
 //
 
 import Foundation
 
-public class Dungeon  {
-    let n_i: Int
-    let n_j: Int
+public class Dungeon {
+    private let dungeon: DungeonInternal
     
-    public lazy var height: Int = { return self.n_i * 2 + 1 }()
-    public lazy var width: Int = { return self.n_j * 2 + 1 }()
+    public var width: Int { self.dungeon.width }
+    public var height: Int { self.dungeon.height }
     
-    lazy var maxRowIndex: Int = { return self.height - 1 }()
-    lazy var maxColumnIndex: Int = { return self.width - 1 }()
+    internal var nodes: [[Node]] { self.dungeon.nodes }
     
-    var nodes: [[Node]] = [[]]
-    
-    public var rooms: [UInt: Room] = [:]
-    public var doors: [Door] = []
-    public var connections: [String] = []
-    
-    // MARK: - Constructors
-    
-    /// Create a dungeon based on a base width and height.
-    /// Please note that the actual width and height is
-    /// calculated by multiplying by 2 and adding 1.
-    ///
-    /// - Parameters:
-    ///   - width: The base width
-    ///   - height: The base height
-    init(width: Int, height: Int) {
-        self.n_i = width
-        self.n_j = width
-        
-        self.nodes = Array(
-            repeating: Array(
-                repeating: .nothing,
-                count: self.width),
-            count: self.height
-        )
+    internal init(dungeon: DungeonInternal) {
+        self.dungeon = dungeon
     }
     
-    // MARK: - Public
-    
-    internal func getNodeAt(x: Int, y: Int) -> Node {
-        self.nodes[x][y]
-    }
-        
+    /// Retrieve a node from the dungeon.
     public subscript(x: Int, y: Int) -> Node {
         return self.nodes[self.height - y - 1][x]
     }
+    
+    /// Returns a dictionary of room ids and room data
+    lazy var roomInfo: [UInt: Room] = {
+        var roomInfo: [UInt: Room] = [:]
+                
+        for (roomId, room) in self.dungeon.rooms {
+            let x = Int(room.coord.y * 2 + 1)
+            let y = self.dungeon.width - 1 - Int(room.coord.x * 2 + 1)
+            roomInfo[roomId] = Room(i: x, j: y, width: room.width * 2 + 1, height: room.height * 2 + 1)
+        }
+        
+        return roomInfo
+    }()
 }
 
 // MARK: - CustomStringConvertible

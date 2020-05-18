@@ -27,7 +27,7 @@ open class DungeonBuilder {
         let height = Int(Float(size) * aspectRatio)
         let width = size
 
-        let dungeon = Dungeon(width: width, height: height)
+        let dungeon = DungeonInternal(width: width, height: height)
         applyMask(to: dungeon)
         addRooms(to: dungeon)
         openRooms(in: dungeon)
@@ -35,15 +35,15 @@ open class DungeonBuilder {
         addCorridors(to: dungeon)
         clean(dungeon: dungeon)
         
-        return dungeon
+        return Dungeon(dungeon: dungeon)
     }
     
-    private func clean(dungeon: Dungeon) {
+    private func clean(dungeon: DungeonInternal) {
         removeDeadEnds(in: dungeon)
         fixDoors(in: dungeon)
     }
     
-    private func labelRooms(in dungeon: Dungeon) {
+    private func labelRooms(in dungeon: DungeonInternal) {
         for roomId in dungeon.rooms.keys.sorted() {
             guard let room = dungeon.rooms[roomId] else { continue }
             let id = String("\(roomId)")
@@ -58,7 +58,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func removeDeadEnds(in dungeon: Dungeon) {
+    private func removeDeadEnds(in dungeon: DungeonInternal) {
         collapseTunnels(in: dungeon, closeInfo: closeEndInfo)
         
         if self.configuration.closeArcs {
@@ -66,7 +66,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func collapseTunnels(in dungeon: Dungeon, closeInfo: [Direction: [CloseType: [Any]]]) {
+    private func collapseTunnels(in dungeon: DungeonInternal, closeInfo: [Direction: [CloseType: [Any]]]) {
         let deadEndRemoval = self.configuration.deadEndRemoval
         let percentage = deadEndRemoval.percentage
         
@@ -90,8 +90,8 @@ open class DungeonBuilder {
         }
     }
     
-    private func collapseTunnel(in dungeon: Dungeon, position: Position, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
-        if dungeon.getNodeAt(x: position.i, y: position.j).isDisjoint(with: .openspace) {
+    private func collapseTunnel(in dungeon: DungeonInternal, position: Position, directionCloseInfo: [Direction: [CloseType: [Any]]]) {
+        if dungeon[position.i, position.j].isDisjoint(with: .openspace) {
             return
         }
         
@@ -126,7 +126,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func checkTunnel(in dungeon: Dungeon, position: Position, closeInfo: [CloseType: [Any]]) -> Bool {
+    private func checkTunnel(in dungeon: DungeonInternal, position: Position, closeInfo: [CloseType: [Any]]) -> Bool {
         if let corridorInfo = closeInfo[.corridor] as? [[Int]] {
             for corridorPosition in corridorInfo {
                 let r = position.i + corridorPosition[0]
@@ -152,7 +152,7 @@ open class DungeonBuilder {
         return true
     }
     
-    private func applyMask(to dungeon: Dungeon) {
+    private func applyMask(to dungeon: DungeonInternal) {
         guard let mask = self.configuration.dungeonLayout.mask else {
             return
         }
@@ -170,14 +170,14 @@ open class DungeonBuilder {
         }
     }
     
-    private func addRooms(to dungeon: Dungeon) {
+    private func addRooms(to dungeon: DungeonInternal) {
         switch self.configuration.roomLayout {
         case .dense: addDenseRooms(to: dungeon)
         default: addScatteredRooms(to: dungeon)
         }
     }
     
-    private func addCorridors(to dungeon: Dungeon) {
+    private func addCorridors(to dungeon: DungeonInternal) {
         for i in (0 ..< dungeon.n_i) {
             let r = i * 2 + 1
             
@@ -193,13 +193,13 @@ open class DungeonBuilder {
         }
     }
     
-    private func openRooms(in dungeon: Dungeon) {
+    private func openRooms(in dungeon: DungeonInternal) {
         for roomId in dungeon.rooms.keys.sorted() {
             openRoom(in: dungeon, roomId: roomId)
         }
     }
     
-    private func openRoom(in dungeon: Dungeon, roomId: UInt) {
+    private func openRoom(in dungeon: DungeonInternal, roomId: UInt) {
         var sills = doorSills(for: dungeon, roomId: roomId)
 
         guard let room = dungeon.rooms[roomId], sills.count > 0 else {
@@ -234,7 +234,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func openDoor(for dungeon: Dungeon, room: Room, sill: Sill) {
+    private func openDoor(for dungeon: DungeonInternal, room: Room, sill: Sill) {
         for n in (0 ..< 3) {
             let r = sill.r + sill.direction.y * n
             let c = sill.c + sill.direction.x * n
@@ -248,7 +248,7 @@ open class DungeonBuilder {
         dungeon.nodes[sill.door_r][sill.door_c] = doorType()
     }
 
-    private func fixDoors(in dungeon: Dungeon) {
+    private func fixDoors(in dungeon: DungeonInternal) {
         var fixed: [String] = []
         
         for roomKey in dungeon.rooms.keys.sorted() {
@@ -306,12 +306,12 @@ open class DungeonBuilder {
         }
     }
     
-    private func allocOpens(for dungeon: Dungeon, room: Room) -> Int {
+    private func allocOpens(for dungeon: DungeonInternal, room: Room) -> Int {
         let openCount = Int(sqrt(Double(room.width + 1) * Double(room.height + 1)))
         return openCount + numberGenerator.next(maxValue: openCount)
     }
     
-    private func doorSills(for dungeon: Dungeon, roomId: UInt) -> [Sill] {
+    private func doorSills(for dungeon: DungeonInternal, roomId: UInt) -> [Sill] {
         var sills: [Sill] = []
         
         guard let room = dungeon.rooms[roomId] else {
@@ -357,7 +357,7 @@ open class DungeonBuilder {
         return sills
     }
     
-    private func checkSill(for dungeon: Dungeon, roomId: UInt, position: Position, direction: Direction) -> Sill? {
+    private func checkSill(for dungeon: DungeonInternal, roomId: UInt, position: Position, direction: Direction) -> Sill? {
         let door_r = position.i + direction.y
         let door_c = position.j + direction.x
         let door_cell = dungeon.nodes[door_r][door_c]
@@ -388,7 +388,7 @@ open class DungeonBuilder {
         )
     }
     
-    private func makeTunnel(in dungeon: Dungeon, position: Position, with direction: Direction? = nil) {
+    private func makeTunnel(in dungeon: DungeonInternal, position: Position, with direction: Direction? = nil) {
         let randomDirections = tunnelDirections(with: direction)
         
         for randomDirection in randomDirections {
@@ -400,7 +400,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func openTunnel(in dungeon: Dungeon, position: Position, direction: Direction) -> Bool {
+    private func openTunnel(in dungeon: DungeonInternal, position: Position, direction: Direction) -> Bool {
         let r1 = position.i * 2 + 1
         let c1 = position.j * 2 + 1
         let r2 = (position.i + direction.y) * 2 + 1
@@ -417,7 +417,7 @@ open class DungeonBuilder {
         return false
     }
     
-    private func delveTunnel(in dungeon: Dungeon, origin: Position, destination: Position) -> Bool {
+    private func delveTunnel(in dungeon: DungeonInternal, origin: Position, destination: Position) -> Bool {
         let b = [origin.i, destination.i].sorted()
         let c = [origin.j, destination.j].sorted()
         
@@ -431,7 +431,7 @@ open class DungeonBuilder {
         return true
     }
     
-    private func soundTunnel(in dungeon: Dungeon, origin: Position, destination: Position) -> Bool {
+    private func soundTunnel(in dungeon: DungeonInternal, origin: Position, destination: Position) -> Bool {
         guard (0 ..< dungeon.height).contains(destination.i) else { return false }
         guard (0 ..< dungeon.width).contains(destination.j) else { return false }
         
@@ -475,7 +475,7 @@ open class DungeonBuilder {
         return shuffledItems
     }
     
-    private func addDenseRooms(to dungeon: Dungeon) {
+    private func addDenseRooms(to dungeon: DungeonInternal) {
         for i in 0 ..< dungeon.n_i {
             let r = i * 2 + 1
             for j in 0 ..< dungeon.n_j {
@@ -498,7 +498,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func addScatteredRooms(to dungeon: Dungeon) {
+    private func addScatteredRooms(to dungeon: DungeonInternal) {
         var roomCount = allocateRooms(for: dungeon, roomSize: self.configuration.roomSize)
         
         for _ in (0 ..< roomCount) {
@@ -513,7 +513,7 @@ open class DungeonBuilder {
         }
     }
     
-    private func emplaceRoom(in dungeon: Dungeon, roomSize: RoomSize, position: Position = .zero) {
+    private func emplaceRoom(in dungeon: DungeonInternal, roomSize: RoomSize, position: Position = .zero) {
         if dungeon.rooms.count > 999 {
             return
         }
@@ -587,7 +587,7 @@ open class DungeonBuilder {
         dungeon.rooms[roomId] = room
     }
     
-    private func makeRoom(for dungeon: Dungeon, roomSize: RoomSize, position: Position) -> Room {
+    private func makeRoom(for dungeon: DungeonInternal, roomSize: RoomSize, position: Position) -> Room {
         let radixBase = roomSize.radix
         let size = roomSize.size
         
@@ -622,7 +622,7 @@ open class DungeonBuilder {
         return Room(i: i, j: j, width: width, height: height)
     }
     
-    private func soundRoom(for dungeon: Dungeon, r1: Int, c1: Int, r2: Int, c2: Int) -> [UInt: UInt]? {
+    private func soundRoom(for dungeon: DungeonInternal, r1: Int, c1: Int, r2: Int, c2: Int) -> [UInt: UInt]? {
         var hitInfo: [UInt: UInt] = [:]
         
         for r in (r1 ... r2) {
@@ -643,7 +643,7 @@ open class DungeonBuilder {
         return hitInfo
     }
     
-    private func allocateRooms(for dungeon: Dungeon, roomSize: RoomSize) -> Int {
+    private func allocateRooms(for dungeon: DungeonInternal, roomSize: RoomSize) -> Int {
         let size = roomSize.size
         let radix = roomSize.radix
         let dungeonArea = dungeon.width * dungeon.height
