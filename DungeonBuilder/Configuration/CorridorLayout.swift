@@ -24,4 +24,13 @@ public enum CorridorLayout {
     var closeArcs: Bool {
         return self == .straight || self == .errant
     }
+    
+    public init(rawValue: String) {
+        switch rawValue {
+        case "labyrinth": self = .labyrinth
+        case "errant": self = .errant
+        case "straight": self = .straight
+        default: fatalError()
+        }
+    }
 }
