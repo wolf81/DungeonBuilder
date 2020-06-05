@@ -12,4 +12,5 @@ public enum RoomLayout: String {
     case sparse
     case scattered
     case dense
+    case complex
 }

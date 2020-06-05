@@ -531,11 +531,8 @@ open class DungeonBuilder {
             return
         }
         
-        guard
-            let hitInfo = soundRoom(for: dungeon, r1: r1, c1: c1, r2: r2, c2: c2),
-            hitInfo.count == 0 else {
-            return
-        }
+        guard let hitInfo = soundRoom(for: dungeon, r1: r1, c1: c1, r2: r2, c2: c2) else { return }
+        if hitInfo.count != 0 { return }
         
         let roomId = UInt(dungeon.rooms.count + 1)
         

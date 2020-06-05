@@ -22,7 +22,7 @@ class DungeonBuilderTests: XCTestCase {
     }
     
     func testCreateDungeon() {
-        let dungeonBuilder = DungeonBuilder(configuration: Configuration.Default)
+        let dungeonBuilder = DungeonBuilder(configuration: DungeonConfiguration.Default)
         let dungeon = dungeonBuilder.build(name: "Cellar of Bloody Death")        
         print(dungeon)
     }
@@ -43,7 +43,7 @@ class DungeonBuilderTests: XCTestCase {
     }
     
     func testRoomCoord() {
-        let dungeonBuilder = DungeonBuilder(configuration: Configuration.Default)
+        let dungeonBuilder = DungeonBuilder(configuration: DungeonConfiguration.Default)
         let dungeon = dungeonBuilder.build(name: "Cellar of Bloody Death")
 
         let roomId: UInt = 22
